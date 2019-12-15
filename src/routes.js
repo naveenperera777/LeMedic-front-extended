@@ -13,6 +13,7 @@ import PatientProfile from "views/UserList/userProfile";
 import UserForm from "views/UserMultiStepForm/UserForm";
 import PatientRegistration from "views/PatientRegistration/registerPatient";
 import PatientDashboard from "views/PatientDashboard";
+import PatientStatistics from "views/PatientStatistics";
 
 const dashboardRoutes = [
   {
@@ -20,6 +21,13 @@ const dashboardRoutes = [
     name: "Patient Dashboard",
     icon: "pe-7s-users",
     component: PatientDashboard,
+    layout: "/admin"
+  },
+  {
+    path: "/statistics/patient",
+    name: "Patient Statistics",
+    icon: "pe-7s-id",
+    component: PatientStatistics,
     layout: "/admin"
   },
   {
