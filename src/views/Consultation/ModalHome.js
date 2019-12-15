@@ -51,21 +51,15 @@ if (!medical_records.length == 0) {
       <div>
           {medical_records.map(record => {
           return (
-            <ButtonToolbar>
             <ListGroup>
               <ListGroupItem key= {record.complain}>
               <Button bsStyle="primary" 
                onClick={() => onClickHandler(record)}>     
-                Show More
+                #{record.session_id} {record.complain}
             </Button>
-           {record.complain} {record.status} {record.session_id}
            <ModalConsultation show={lgShowRecord.status} onHide={lgClose} data={lgShowRecord.data}/>
-              </ListGroupItem> 
-
-
-              
+              </ListGroupItem>               
             </ListGroup>        
-           </ButtonToolbar>          
           );
         })}
       </div>

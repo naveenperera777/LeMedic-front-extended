@@ -4,7 +4,9 @@ import {Modal,Button,Panel,ListGroup,ListGroupItem} from "react-bootstrap";
 
 
 export default function ModalConsultation(props){
-  console.log("modal data", props);
+  console.log("modal data", props); 
+  let timestamp = new Date((props.timestamp)/1000);
+  let utcString = timestamp.toUTCString();
   return (
     <div>
     <Modal
@@ -13,7 +15,7 @@ export default function ModalConsultation(props){
       aria-labelledby="contained-modal-title-lg"
     >
       <Modal.Header closeButton>
-    <Modal.Title id="contained-modal-title-lg">Session ID #{props.data.session_id} Date : {props.timestamp}</Modal.Title>
+    <Modal.Title id="contained-modal-title-lg">Session ID #{props.data.session_id} Date : {utcString}</Modal.Title>
  
       </Modal.Header>
       <Modal.Body>
