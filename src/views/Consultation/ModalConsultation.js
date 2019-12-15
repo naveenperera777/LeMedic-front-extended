@@ -1,31 +1,104 @@
 import React, { Component } from "react";
 
-import {Modal,Button,ButtonToolbar} from "react-bootstrap";
+import {Modal,Button,Panel,ListGroup,ListGroupItem} from "react-bootstrap";
 
 
 export default function ModalConsultation(props){
   console.log("modal data", props);
   return (
+    <div>
     <Modal
       {...props}
       bsSize="large"
       aria-labelledby="contained-modal-title-lg"
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-lg">{props.data.complain}</Modal.Title>
+    <Modal.Title id="contained-modal-title-lg">Session ID #{props.data.session_id} Date : {props.timestamp}</Modal.Title>
+ 
       </Modal.Header>
       <Modal.Body>
-        <h4>Wrapped Text {props.data.complain}</h4>
-        <p>
-          Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-          dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-          ac consectetur ac, vestibulum at eros.
-        </p>
+
+
+      <Panel bsStyle="primary">
+        <Panel.Heading>Diagnosis</Panel.Heading>
+        <ListGroup>
+      
+       <ListGroupItem> <h6>Complain</h6></ListGroupItem>
+          <ListGroupItem>{props.data.complain}</ListGroupItem>
+        
+       
+       <ListGroupItem><h6>Signs</h6></ListGroupItem>
+          <ListGroupItem>{props.data.signs}</ListGroupItem>
+          
+       <ListGroupItem><h6>General Examination</h6></ListGroupItem>        
+          <ListGroupItem>{props.data.general_exam}</ListGroupItem>
+        
+        {/*
+        <ListGroupItem><h6>Systemic Examination</h6></ListGroupItem>
+          <ListGroupItem>{props.data.signs}</ListGroupItem>
+         */}
+
+       
+       <ListGroupItem><h6>Investigation</h6></ListGroupItem>
+          <ListGroupItem>{props.data.investigation}</ListGroupItem>
+         </ListGroup> 
+                
+      </Panel>
+
+
+      <Panel bsStyle="success">
+        <Panel.Heading>Treatment</Panel.Heading>
+        <ListGroup>
+          <ListGroupItem><h6>Medical Management</h6></ListGroupItem>
+          <ListGroupItem>{props.data.medical_management}</ListGroupItem>
+        
+          <ListGroupItem><h6>Surgical Management</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.surgical_management}</ListGroupItem>
+          
+          <ListGroupItem><h6>Special Remarks</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.remarks}</ListGroupItem>
+        
+          <ListGroupItem><h6>Next Date</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.next_date}</ListGroupItem>
+        </ListGroup>        
+      </Panel>
+
+      <Panel bsStyle="warning">
+      <Panel.Heading>Treatment</Panel.Heading>
+        <ListGroup>
+          <ListGroupItem><h6>Consultation Fees</h6></ListGroupItem>
+          <ListGroupItem>{props.data.medical_management}</ListGroupItem>
+        
+          <ListGroupItem><h6>Fees for Medications</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.surgical_management}</ListGroupItem>
+          
+          <ListGroupItem><h6>Tax Percentage</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.remarks}</ListGroupItem>
+        
+          <ListGroupItem><h6>Miscellaneous Charges</h6></ListGroupItem>
+        
+          <ListGroupItem>{props.data.next_date}</ListGroupItem>
+
+          <ListGroupItem><h6>Total Amount</h6></ListGroupItem>
+        
+        <ListGroupItem>{props.data.next_date}</ListGroupItem>
+        </ListGroup>   
+      </Panel>
+
+
       
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
       </Modal.Footer>
     </Modal>
+   </div>
+            
+    
   );
 }

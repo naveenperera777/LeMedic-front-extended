@@ -52,9 +52,7 @@ if (!medical_records.length == 0) {
           {medical_records.map(record => {
           return (
             <ButtonToolbar>
-            <ListGroup> 
-
-
+            <ListGroup>
               <ListGroupItem key= {record.complain}>
               <Button bsStyle="primary" 
                onClick={() => onClickHandler(record)}>     
