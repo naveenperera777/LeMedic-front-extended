@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import ChartistGraph from "react-chartist";
 import { Grid, Row, Col } from "react-bootstrap";
-
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { Tasks } from "components/Tasks/Tasks.jsx";
@@ -17,8 +16,22 @@ import {
   responsiveBar,
   legendBar
 } from "variables/Variables.jsx";
+import axios from 'axios';
 
 export default function PatientDashboard() {
+
+    const [patientCount, setpatientCount] = useState("");
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/patient/count/total`
+          );
+          setpatientCount(result.data.data);
+          console.log("patientCount----->", patientCount);
+        };
+        fetchData();
+      }, []);
 
     function createLegend(json) {
         var legend = [];
@@ -67,7 +80,7 @@ export default function PatientDashboard() {
               <StatsCard
                 bigIcon={<i className="pe-7s-arc text-info" />}
                 statsText="Patients"
-                statsValue="+45"
+                statsValue={patientCount}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
