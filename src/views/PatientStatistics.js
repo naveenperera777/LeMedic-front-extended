@@ -7,10 +7,12 @@ import axios from 'axios';
 export default function PatientStatistics() {
 
     const [gender, setGender] = useState("");
-    const [genderCount, setgenderCount] = useState([])
+    const [genderCount, setgenderCount] = useState([]);
+    const [diseaseList, setDiseaseList] = useState([]);
+
     
      const data = {
-        labels  : ['Male', 'Female'],
+        labels  : ['Male', 'Female', 'X'],
         datasets: [
             {
                 label               : 'My First dataset',
@@ -19,7 +21,7 @@ export default function PatientStatistics() {
                 borderWidth         : 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor    : 'rgba(255,99,132,1)',
-                data                : [400,800]
+                data                : [400,800,300]
             }
         ]
     };
@@ -32,7 +34,17 @@ export default function PatientStatistics() {
           );
 
         setgenderCount(result.data.data);
-          console.log("patientCount----->", genderCount);
+        };
+        fetchData();
+      }, []);
+
+      useEffect(() => {
+        const fetchData = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/patient/disease/list`
+          );
+
+          setDiseaseList(result.data.data);
         };
         fetchData();
       }, []);
@@ -42,17 +54,12 @@ export default function PatientStatistics() {
         setGender(event);
     }
 
-    function createLegend(json) {
-        var legend = [];
-        for (var i = 0; i < json["names"].length; i++) {
-          var type = "fa fa-circle text-" + json["types"][i];
-          legend.push(<i className={type} key={i} />);
-          legend.push(" ");
-          legend.push(json["names"][i]);
-        }
-        return legend;
-      }
+
     console.log("selected gender",gender);
+    console.log("gender count",genderCount);
+    console.log("disease list",diseaseList);
+
+
   return (
     <div>
         <div className="content">
@@ -62,15 +69,33 @@ export default function PatientStatistics() {
         <Col xs={6} md={4}>
               <ListGroup>
                   <ListGroupItem>
-                      Gender
+                      Select Gender
                   </ListGroupItem>
               </ListGroup>
         </Col>
 
         <Col xs={6} md={4}>
-        <DropdownButton title="Dropdown">
-        <MenuItem eventKey="1" onSelect={() => onSelect("male")} value="male">Male</MenuItem>
-        <MenuItem eventKey="2" onSelect={() => onSelect("male")}>Female</MenuItem>
+        <DropdownButton title={gender}>
+        <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
+        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem>
+        </DropdownButton>
+        </Col>            
+       
+      </Row>
+
+          <Row>
+        <Col xs={6} md={4}>
+              <ListGroup>
+                  <ListGroupItem>
+                      Select Disease
+                  </ListGroupItem>
+              </ListGroup>
+        </Col>
+
+        <Col xs={6} md={4}>
+        <DropdownButton title={gender}>
+        <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
+        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem>
         </DropdownButton>
         </Col>            
        
