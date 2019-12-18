@@ -6,13 +6,14 @@ import axios from 'axios';
 
 export default function PatientStatistics() {
 
-    const [gender, setGender] = useState("");
-    const [genderCount, setgenderCount] = useState([]);
+    const [gender, setGender] = useState("select gender");
+    const [genderCount, setgenderCount] = useState({});
     const [diseaseList, setDiseaseList] = useState([]);
+    const [disease, setDisease] = useState("Select Disease");
 
-    
+    console.log("data",genderCount[gender]);
      const data = {
-        labels  : ['Male', 'Female', 'X'],
+        labels  : [gender],
         datasets: [
             {
                 label               : 'My First dataset',
@@ -21,7 +22,7 @@ export default function PatientStatistics() {
                 borderWidth         : 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor    : 'rgba(255,99,132,1)',
-                data                : [400,800,300]
+                data                : [genderCount[gender]]
             }
         ]
     };
@@ -32,8 +33,13 @@ export default function PatientStatistics() {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/gender`
           );
-
-        setgenderCount(result.data.data);
+          let genderArr = result.data.data;
+          console.log("genderArr",genderArr);
+          for( let i=0 ; i < genderArr.length; i++){
+            let genderItem = genderArr[i];
+            setgenderCount(genderCount => 
+              ({ ...genderCount, [genderItem.gender]: genderItem.total}));
+          }
         };
         fetchData();
       }, []);
@@ -49,9 +55,15 @@ export default function PatientStatistics() {
         fetchData();
       }, []);
 
-    function onSelect(event){
-        console.log("event",event);
-        setGender(event);
+    function onSelect(type,value){
+        console.log("event",type,value);
+        switch(type){
+          case 'disease':
+            setDisease(value);
+            break;
+          case 'gender':
+            setGender(value)
+        }
     }
 
 
@@ -76,8 +88,8 @@ export default function PatientStatistics() {
 
         <Col xs={6} md={4}>
         <DropdownButton title={gender}>
-        <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
-        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem>
+        <MenuItem eventKey="1" onSelect={() => onSelect("gender","Male")}>Male</MenuItem>
+       <MenuItem eventKey="2" onSelect={() => onSelect("gender","Female")}>Female</MenuItem>
         </DropdownButton>
         </Col>            
        
@@ -93,9 +105,31 @@ export default function PatientStatistics() {
         </Col>
 
         <Col xs={6} md={4}>
+        <DropdownButton title={disease}>
+        {diseaseList.map(ailment => {              
+              return(
+                  <MenuItem eventKey={ailment} onSelect={() => onSelect("disease",ailment)}>{ailment}</MenuItem>
+              );
+            })}
+
+        </DropdownButton>
+        </Col>            
+       
+          </Row>
+
+          <Row>
+        <Col xs={6} md={4}>
+              <ListGroup>
+                  <ListGroupItem>
+                      Select Area
+                  </ListGroupItem>
+              </ListGroup>
+        </Col>
+
+        <Col xs={6} md={4}>
         <DropdownButton title={gender}>
-        <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
-        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem>
+        {/* <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
+        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem> */}
         </DropdownButton>
         </Col>            
        
@@ -104,14 +138,14 @@ export default function PatientStatistics() {
 
           <Row>
               
-          {genderCount.map(record => {
+          {/* {genderCount.map(record => {
               console.log("record",record);
               return(
                 <div>
               <h6>{record.gender}:{record.total}</h6>
               </div>
               );
-            })}
+            })} */}
     
           </Row>
 
@@ -134,7 +168,7 @@ export default function PatientStatistics() {
                         ticks: {
                             beginAtZero:true,
                             min: 0,
-                            max: 1000    
+                            max: 20    
                         }
                       }]
                    }
