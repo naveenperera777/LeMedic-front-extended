@@ -9,11 +9,12 @@ export default function PatientStatistics() {
     const [gender, setGender] = useState("select gender");
     const [genderCount, setgenderCount] = useState({});
     const [diseaseList, setDiseaseList] = useState([]);
+    const [diseaseCount, setdiseaseCount] = useState({});
     const [disease, setDisease] = useState("Select Disease");
 
     console.log("data",genderCount[gender]);
      const data = {
-        labels  : [gender],
+        labels  : [disease],
         datasets: [
             {
                 label               : 'My First dataset',
@@ -22,14 +23,14 @@ export default function PatientStatistics() {
                 borderWidth         : 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor    : 'rgba(255,99,132,1)',
-                data                : [genderCount[gender]]
+                data                : [diseaseCount[disease]]
             }
         ]
     };
     
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchGenderCount = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/gender`
           );
@@ -41,25 +42,43 @@ export default function PatientStatistics() {
               ({ ...genderCount, [genderItem.gender]: genderItem.total}));
           }
         };
-        fetchData();
-      }, []);
 
-      useEffect(() => {
-        const fetchData = async () => {
+        const fetchDiseaseCount = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/patient/count/disease`
+          );
+          let diseaseArr = result.data.data;
+          console.log("diseaseArr",diseaseArr);
+          for( let i=0 ; i < diseaseArr.length; i++){
+            let disease = diseaseArr[i];
+            setdiseaseCount(diseaseCount => 
+              ({ ...diseaseCount, [disease.disease]: disease.total}));
+          }
+        };
+
+        const fetchDiseaseList = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/disease/list`
           );
 
           setDiseaseList(result.data.data);
         };
-        fetchData();
+
+        fetchDiseaseCount();
+        fetchGenderCount();
+        fetchDiseaseList();
       }, []);
+  
+
+    function handleDiseaseChange(value){
+      setDisease(value);      
+    } 
 
     function onSelect(type,value){
         console.log("event",type,value);
         switch(type){
           case 'disease':
-            setDisease(value);
+            handleDiseaseChange(value);
             break;
           case 'gender':
             setGender(value)
