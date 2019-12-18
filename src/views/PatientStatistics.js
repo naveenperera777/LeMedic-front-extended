@@ -10,11 +10,27 @@ export default function PatientStatistics() {
     const [genderCount, setgenderCount] = useState({});
     const [diseaseList, setDiseaseList] = useState([]);
     const [diseaseCount, setdiseaseCount] = useState({});
+    const [diseaseArr, setDiseaseArr] = useState([]);
     const [disease, setDisease] = useState("Select Disease");
 
-    console.log("data",genderCount[gender]);
+    let label = [];
+    let graphData = [];
+    if(disease =="All"){
+      delete diseaseCount.All;
+      for (let [key, value] of Object.entries(diseaseCount)) {
+        console.log("key is --->",key, value);
+        label.push(key);
+        graphData.push(value);
+    }   
+    } else {
+      label.push(disease);
+      graphData.push(diseaseCount[disease]);
+    }
+
+    console.log("graph data",graphData);
+
      const data = {
-        labels  : [disease],
+        labels  : label,
         datasets: [
             {
                 label               : 'My First dataset',
@@ -23,7 +39,7 @@ export default function PatientStatistics() {
                 borderWidth         : 1,
                 hoverBackgroundColor: 'rgba(255,99,132,0.4)',
                 hoverBorderColor    : 'rgba(255,99,132,1)',
-                data                : [diseaseCount[disease]]
+                data                : graphData
             }
         ]
     };
@@ -51,6 +67,7 @@ export default function PatientStatistics() {
           console.log("diseaseArr",diseaseArr);
           for( let i=0 ; i < diseaseArr.length; i++){
             let disease = diseaseArr[i];
+            setDiseaseArr(diseaseArr => [...diseaseArr, disease.total]);
             setdiseaseCount(diseaseCount => 
               ({ ...diseaseCount, [disease.disease]: disease.total}));
           }
@@ -60,8 +77,10 @@ export default function PatientStatistics() {
           const result = await axios(
             `http://localhost:9090/statistics/patient/disease/list`
           );
-
-          setDiseaseList(result.data.data);
+          let alldieaseList = result.data.data;
+          console.log("dis------->",alldieaseList);
+          alldieaseList.push("All")
+          setDiseaseList(alldieaseList);
         };
 
         fetchDiseaseCount();
@@ -146,7 +165,7 @@ export default function PatientStatistics() {
         </Col>
 
         <Col xs={6} md={4}>
-        <DropdownButton title={gender}>
+        <DropdownButton title={"city"}>
         {/* <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
         <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem> */}
         </DropdownButton>
