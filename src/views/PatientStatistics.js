@@ -8,9 +8,11 @@ import BarChart from '../components/Reports/BarChart';
 export default function PatientStatistics() {
 
     const [gender, setGender] = useState("select gender");
-    const [genderCount, setgenderCount] = useState({});
-    const [diseaseListWithCount, setdiseaseListWithCount] = useState({});
     const [disease, setDisease] = useState("Select Disease");
+    const [city, setCity] = useState("Select City");
+    const [genderListWithCount, setGenderListWithCount] = useState({});
+    const [diseaseListWithCount, setdiseaseListWithCount] = useState({});
+    const [GeographyListWithCount, setGeographyListWithCount] = useState({});
     const [selectedCategory,setSelectedCategory] = useState([]);
 
     let label = [];
@@ -37,36 +39,53 @@ export default function PatientStatistics() {
           graphData.push(diseaseListWithCount[disease]);
   
           }
-        } else {   
-          
+        } else if(category == "gender") {             
           switch(gender){
             case "All":
-              delete genderCount.All;
-              delete genderCount.None;
-              for (let [key, value] of Object.entries(genderCount)) {
+              delete genderListWithCount.All;
+              delete genderListWithCount.None;
+              for (let [key, value] of Object.entries(genderListWithCount)) {
                 console.log("key is --->",key, value);
                 label.push(key);
                 graphData.push(value);
                 }
-                genderCount["All"] = 0; 
-                genderCount["None"] = 0; 
+                genderListWithCount["All"] = 0; 
+                genderListWithCount["None"] = 0; 
                 break; 
             case "None":
               break;
             default:
               label.push(gender);
-              graphData.push(genderCount[gender]);
+              graphData.push(genderListWithCount[gender]);
       
               } 
+            } else {
+              switch(city){
+                case "All":
+                  delete GeographyListWithCount.All;
+                  delete GeographyListWithCount.None;
+                  for (let [key, value] of Object.entries(GeographyListWithCount)) {
+                    console.log("key is --->",key, value);
+                    label.push(key);
+                    graphData.push(value);
+                    }
+                    GeographyListWithCount["All"] = 0; 
+                    GeographyListWithCount["None"] = 0; 
+                    break; 
+                case "None":
+                  break;
+                default:
+                  label.push(city);
+                  graphData.push(GeographyListWithCount[city]);
+          
+                  } 
             }
-    }
-
-  
+    }  
 
     console.log("graph data",graphData);
 
     useEffect(() => {
-        const fetchGenderCount = async () => {
+        const fetchgenderListWithCount = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/gender`
           );
@@ -76,8 +95,8 @@ export default function PatientStatistics() {
           console.log("genderArr",genderArr);
           for( let i=0 ; i < genderArr.length; i++){
             let genderItem = genderArr[i];
-            setgenderCount(genderCount => 
-              ({ ...genderCount, [genderItem.gender]: genderItem.total}));
+            setGenderListWithCount(genderListWithCount => 
+              ({ ...genderListWithCount, [genderItem.gender]: genderItem.total}));
           }
         };
 
@@ -96,23 +115,62 @@ export default function PatientStatistics() {
           }
         };
 
+        const fetchCityListWithCount = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/patient/count/area`
+          );
+          let cityArr = result.data.data;
+          cityArr.push({"district": "All", "total": 0});
+          cityArr.push({"district": "None", "total": 0});
+          console.log("cityArr",cityArr);
+          for( let i=0 ; i < cityArr.length; i++){
+            let city = cityArr[i];
+            setGeographyListWithCount(GeographyListWithCount => 
+              ({ ...GeographyListWithCount, [city.district]: city.total}));
+          }
+        };
       
         fetchDiseaseListWithCount();
-        fetchGenderCount();
+        fetchgenderListWithCount();
+        fetchCityListWithCount();
 
       }, []);
   
 
     function handleDiseaseChange(type,value){
       setDisease(value);
-      if(selectedCategory.indexOf(type) == -1)
-      setSelectedCategory(selectedCategory => [...selectedCategory, type]);    
+      let index =selectedCategory.indexOf(type);
+      if(index == -1){
+        setSelectedCategory(selectedCategory => [...selectedCategory, type]); 
+      } else if (value == "None") {
+        if(index > -1){
+          selectedCategory.splice(index,1);
+        }
+      }
     } 
 
     function handleGenderChange(type,value){
       setGender(value);
-      if(selectedCategory.indexOf(type) == -1)
-      setSelectedCategory(selectedCategory => [...selectedCategory, type]);
+      let index =selectedCategory.indexOf(type);
+      if(index == -1){
+        setSelectedCategory(selectedCategory => [...selectedCategory, type]);
+      } else if (value == "None") {        
+        if(index > -1){
+          selectedCategory.splice(index,1);
+        }
+      }
+    }
+
+    function handleGeographyChange(type,value){
+      setCity(value);
+      let index =selectedCategory.indexOf(type);
+      if(index == -1){
+        setSelectedCategory(selectedCategory => [...selectedCategory, type]);
+      } else if (value == "None") {        
+        if(index > -1){
+          selectedCategory.splice(index,1);
+        }
+      }
     }
 
     function onSelect(type,value){
@@ -123,13 +181,13 @@ export default function PatientStatistics() {
             break;
           case 'gender':
             handleGenderChange(type,value);
+            break;
+          case 'geography':            
+            handleGeographyChange(type,value);  
         }
     }
 
        console.log("Selected category------>", selectedCategory);
-    // console.log("selected gender",gender);
-    // console.log("gender count",genderCount);
-
 
   return (
     <div>
@@ -148,14 +206,13 @@ export default function PatientStatistics() {
         <Col xs={6} md={4}>
         <DropdownButton title={gender}>
         {   
-          Object.keys(genderCount).map((key,value)=>{
+          Object.keys(genderListWithCount).map((key,value)=>{
             return (
           <MenuItem eventKey={value} onSelect={() => onSelect("gender",key)}>{key}</MenuItem>
               )
           })
         }
-        {/* <MenuItem eventKey="1" onSelect={() => onSelect("gender","Male")}>Male</MenuItem>
-       <MenuItem eventKey="2" onSelect={() => onSelect("gender","Female")}>Female</MenuItem> */}
+  
         </DropdownButton>
         </Col>            
        
@@ -194,56 +251,23 @@ export default function PatientStatistics() {
         </Col>
 
         <Col xs={6} md={4}>
-        <DropdownButton title={"city"}>
-        {/* <MenuItem eventKey="1" onSelect={() => onSelect("Male")} value="male">Male</MenuItem>
-        <MenuItem eventKey="2" onSelect={() => onSelect("Female")}>Female</MenuItem> */}
+        <DropdownButton title={city}>
+        {   
+          Object.keys(GeographyListWithCount).map((key,value)=>{
+            return (
+          <MenuItem eventKey={value} onSelect={() => onSelect("geography",key)}>{key}</MenuItem>
+              )
+          })
+        }
         </DropdownButton>
         </Col>            
        
           </Row>
-
-
-          <Row>
-              
-          {/* {genderCount.map(record => {
-              console.log("record",record);
-              return(
-                <div>
-              <h6>{record.gender}:{record.total}</h6>
-              </div>
-              );
-            })} */}
-    
-          </Row>
-
           <Row>
 
           <Col xs={12} md={8}>
 
-            <BarChart label={label} graphData={graphData}/>
-
-           {/* <Bar
-            data={data}
-            width={100}
-            height={50}
-            options={{
-                title:{
-                  display:true,
-                  text:'Patient Count',
-                  fontSize:20
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true,
-                            min: 0,
-                            max: 20    
-                        }
-                      }]
-                   }
-            }}
-                /> */}
-              
+            <BarChart label={label} graphData={graphData}/>             
               
             </Col>
           </Row>
