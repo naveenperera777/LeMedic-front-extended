@@ -2,29 +2,30 @@ import React, { useState , useEffect } from "react";
 import { Grid, Row, Col,ListGroup,ListGroupItem,MenuItem,DropdownButton } from "react-bootstrap";
 import {Bar} from 'react-chartjs-2';
 import axios from 'axios';
+import BarChart from '../components/Reports/BarChart';
 
 
 export default function PatientStatistics() {
 
     const [gender, setGender] = useState("select gender");
     const [genderCount, setgenderCount] = useState({});
-    const [diseaseList, setDiseaseList] = useState([]);
-    const [diseaseCount, setdiseaseCount] = useState({});
-    const [diseaseArr, setDiseaseArr] = useState([]);
+    // const [diseaseList, setDiseaseList] = useState([]);
+    const [diseaseListWithCount, setdiseaseListWithCount] = useState({});
     const [disease, setDisease] = useState("Select Disease");
 
     let label = [];
     let graphData = [];
     if(disease =="All"){
-      delete diseaseCount.All;
-      for (let [key, value] of Object.entries(diseaseCount)) {
+      delete diseaseListWithCount.All;
+      for (let [key, value] of Object.entries(diseaseListWithCount)) {
         console.log("key is --->",key, value);
         label.push(key);
         graphData.push(value);
-    }   
+    }
+    diseaseListWithCount["All"] = 0;   
     } else {
       label.push(disease);
-      graphData.push(diseaseCount[disease]);
+      graphData.push(diseaseListWithCount[disease]);
     }
 
     console.log("graph data",graphData);
@@ -33,7 +34,7 @@ export default function PatientStatistics() {
         labels  : label,
         datasets: [
             {
-                label               : 'My First dataset',
+                label               : 'Patient Count',
                 backgroundColor     : 'rgba(255,99,132,0.2)',
                 borderColor         : 'rgba(255,99,132,1)',
                 borderWidth         : 1,
@@ -59,33 +60,33 @@ export default function PatientStatistics() {
           }
         };
 
-        const fetchDiseaseCount = async () => {
+        const fetchDiseaseListWithCount = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/disease`
           );
           let diseaseArr = result.data.data;
+          diseaseArr.push({"disease": "All", "total": 0});
           console.log("diseaseArr",diseaseArr);
           for( let i=0 ; i < diseaseArr.length; i++){
             let disease = diseaseArr[i];
-            setDiseaseArr(diseaseArr => [...diseaseArr, disease.total]);
-            setdiseaseCount(diseaseCount => 
-              ({ ...diseaseCount, [disease.disease]: disease.total}));
+            setdiseaseListWithCount(diseaseListWithCount => 
+              ({ ...diseaseListWithCount, [disease.disease]: disease.total}));
           }
         };
 
-        const fetchDiseaseList = async () => {
-          const result = await axios(
-            `http://localhost:9090/statistics/patient/disease/list`
-          );
-          let alldieaseList = result.data.data;
-          console.log("dis------->",alldieaseList);
-          alldieaseList.push("All")
-          setDiseaseList(alldieaseList);
-        };
+        // const fetchDiseaseList = async () => {
+        //   const result = await axios(
+        //     `http://localhost:9090/statistics/patient/disease/list`
+        //   );
+        //   let alldieaseList = result.data.data;
+        //   console.log("dis------->",alldieaseList);
+        //   alldieaseList.push("All")
+        //   setDiseaseList(alldieaseList);
+        // };
 
-        fetchDiseaseCount();
+        fetchDiseaseListWithCount();
         fetchGenderCount();
-        fetchDiseaseList();
+        // fetchDiseaseList();
       }, []);
   
 
@@ -107,7 +108,7 @@ export default function PatientStatistics() {
 
     console.log("selected gender",gender);
     console.log("gender count",genderCount);
-    console.log("disease list",diseaseList);
+    // console.log("disease list",diseaseList);
 
 
   return (
@@ -144,11 +145,18 @@ export default function PatientStatistics() {
 
         <Col xs={6} md={4}>
         <DropdownButton title={disease}>
-        {diseaseList.map(ailment => {              
+           {   
+          Object.keys(diseaseListWithCount).map((key,value)=>{
+            return (
+          <MenuItem eventKey={value} onSelect={() => onSelect("disease",key)}>{key}</MenuItem>
+              )
+          })
+        }
+        {/* {diseaseList.map(ailment => {              
               return(
                   <MenuItem eventKey={ailment} onSelect={() => onSelect("disease",ailment)}>{ailment}</MenuItem>
               );
-            })}
+            })} */}
 
         </DropdownButton>
         </Col>            
@@ -189,9 +197,11 @@ export default function PatientStatistics() {
 
           <Row>
 
-          <Col md={6}>
+          <Col xs={12} md={8}>
 
-           <Bar
+            <BarChart label={label} graphData={graphData}/>
+
+           {/* <Bar
             data={data}
             width={100}
             height={50}
@@ -211,7 +221,7 @@ export default function PatientStatistics() {
                       }]
                    }
             }}
-                />
+                /> */}
               
               
             </Col>
