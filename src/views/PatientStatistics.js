@@ -23,6 +23,9 @@ export default function PatientStatistics() {
     // let graphData = [];
     let fetchApiObj = {};
 
+    console.log("################RERENDER##########");
+
+
     useEffect(()=> {
       if(selectedCategory.length == 1 ){
         let category = selectedCategory[0];
@@ -30,13 +33,17 @@ export default function PatientStatistics() {
         switch(disease){
           case "All":
             delete diseaseListWithCount.All;
-            delete diseaseListWithCount.None;            
+            delete diseaseListWithCount.None; 
+            let labelArr = label;
+            let graphArr = graphData;
+            labelArr = [];
+            graphArr = [];
             for (let [key, value] of Object.entries(diseaseListWithCount)) {     
-              if(!(label.indexOf(key)> -1)){
-              setLabel(label => [...label, key]);
-              setgraphData(graphData => [...graphData, value]);   
-              }}         
-              // graphData.push(value);              
+              labelArr.push(key);
+              graphArr.push(value);   
+            }         
+            setLabel(labelArr);
+            setgraphData(graphArr);
               diseaseListWithCount["All"] = 0; 
               diseaseListWithCount["None"] = 0; 
               break; 
@@ -49,22 +56,23 @@ export default function PatientStatistics() {
             setLabel(label => [disease]);
             setgraphData(graphData => [diseaseListWithCount[disease]]); 
             break;
-            // label.push(disease);
-            // graphData.push(diseaseListWithCount[disease]);
-    
             }
           } else if(category == "gender") {             
             switch(gender){
               case "All":
                 delete genderListWithCount.All;
                 delete genderListWithCount.None;
+                let labelArr = label;
+                let graphArr = graphData;
+                labelArr = [];
+                graphArr = [];
                 for (let [key, value] of Object.entries(genderListWithCount)) {
-                  if(!(label.indexOf(key)>-1)){
-                  setLabel(label => [...label, key]);
-                  setgraphData(graphData => [...graphData, value])
-                  // label.push(key);
-                  // graphData.push(value);
-                  }}
+                  labelArr.push(key);
+                  graphArr.push(value);
+
+                }
+                setLabel(labelArr);
+                setgraphData(graphArr);
                   genderListWithCount["All"] = 0; 
                   genderListWithCount["None"] = 0; 
                   break; 
@@ -72,23 +80,23 @@ export default function PatientStatistics() {
                 break;
               default:
                 setLabel(label => [gender]);
-                setgraphData(graphData => [genderListWithCount[gender]]); 
-                // label.push(gender);
-                // graphData.push(genderListWithCount[gender]);
-        
+                setgraphData(graphData => [genderListWithCount[gender]]);      
                 } 
               } else if(category == "geography") {
                 switch(city){
                   case "All":
                     delete GeographyListWithCount.All;
                     delete GeographyListWithCount.None;
+                    let labelArr = label;
+                    let graphArr = graphData;
+                    labelArr = [];
+                    graphArr = [];
                     for (let [key, value] of Object.entries(GeographyListWithCount)) {
-                      if(!(label.indexOf(key)>-1)){
-                      setLabel(label => [...label, key]);
-                      setgraphData(graphData => [...graphData, value]);  
-                      // label.push(key);
-                      // graphData.push(value);
-                      }}
+                      labelArr.push(key);
+                      graphArr.push(value); 
+                    }
+                    setLabel(labelArr);
+                    setgraphData(graphArr); 
                       GeographyListWithCount["All"] = 0; 
                       GeographyListWithCount["None"] = 0; 
                       break; 
