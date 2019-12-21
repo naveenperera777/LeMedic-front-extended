@@ -20,6 +20,7 @@ export default function PatientStatistics(props) {
         ]
     };
 
+    
   return (
     <div>
         <div className="content">
