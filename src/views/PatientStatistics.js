@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from "react";
-import { Grid, Row, Col,ListGroup,FormGroup,ListGroupItem,MenuItem,Checkbox,DropdownButton,ButtonToolbar,ToggleButtonGroup,ToggleButton } from "react-bootstrap";
+import { Grid, Row, Col,ListGroup,Table,ListGroupItem,MenuItem,Checkbox,DropdownButton,ButtonToolbar,ToggleButtonGroup,ToggleButton } from "react-bootstrap";
 import {Bar} from 'react-chartjs-2';
 import axios from 'axios';
 import BarChart from '../components/Reports/BarChart';
@@ -460,6 +460,40 @@ export default function PatientStatistics() {
             <BarChart label={label} graphData={graphData}/>             
               
             </Col>
+          </Row>
+
+          <Row>
+          <Col xs={12} md={8}>
+          <Table striped bordered condensed hover>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                </tbody>
+                </Table>
+
+
+            </Col>
+
+          
+
           </Row>
 
 

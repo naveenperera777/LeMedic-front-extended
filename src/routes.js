@@ -59,13 +59,7 @@ const dashboardRoutes = [
     component: PatientRegistration,
     layout: "/admin"
   },
-  {
-    path: "/prof",
-    name: "User Profile",
-    icon: "pe-7s-user",
-    component: PatientProfile,
-    layout: "/admin"
-  },
+
   {
     path: "/create",
     name: "create",

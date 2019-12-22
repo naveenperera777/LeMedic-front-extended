@@ -16,6 +16,8 @@ import DiagnosisConsultation from "./DiagnosisConsultation.js";
 import MedicationsConsultation from "./MedicationsConsultation.js";
 import PricingConsultation from "./PricingConsultation.js";
 import ConfirmationConsultation from "./Confirmation.js";
+const uuidv4 = require('uuid/v4');
+
 
 
 let suggestions = [];
@@ -202,16 +204,16 @@ export default function IntegrationAutosuggest(props) {
     });
   };
 
-   async function saveMedicalRecord(){    
-      setTimeout( async function(){
+   async function saveMedicalRecord(){   
         const headers = {
           headers: { user: "user1" }
         }
+        let session_id = uuidv4();
         const body = {
-          "patient_id": "123",
+          "patient_id": selected_user.patient_id,
           "consultant_id" : "456",
           "timestamp" : "2019-01-01",
-          "session_id" : "1234",
+          "session_id" : session_id,
           "complain": Diagnosis.complain,
           "signs" : Diagnosis.signs,
           "general_exam": Diagnosis.general_exam,
@@ -225,9 +227,18 @@ export default function IntegrationAutosuggest(props) {
         console.log("Session set API",body);
         const result = await axios.post('http://localhost:9090/session/set', body,  headers);
         console.log("result", result.data);
+        const pricingBody = {
+          "sessionId": session_id,
+          "consultationFees": Pricing.consultationFee,
+          "medicationFees" : Pricing.medicationFee,
+          "tax" : Pricing.tax,
+          "miscellaneous": Pricing.miscellaneous,
+          "total": Pricing.total
+        }
+        await axios.post('http://localhost:9090/session/pricing', pricingBody,  headers);
       setConfirmation(true);    
       console.log("result", result.data.data);
-      },3000)
+ 
   }
 
   
