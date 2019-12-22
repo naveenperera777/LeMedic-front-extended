@@ -149,6 +149,24 @@ export default function PatientStatistics() {
         };
         fetchAreaDistributionOfADisease();
       } else {
+        const fetchCountByDiseaseAndArea = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics//patient/count/disease/${disease}`
+          );
+          console.log(result.data.data);
+          let diseaseAreaArr = result.data.data;
+          let labelArr = [];
+          let graphArr = [];          
+          diseaseAreaArr.forEach(element => {
+            if(element.district == city){
+            labelArr.push(`${city} || ${disease}`);
+            graphArr.push(element.total);
+            }
+          });
+          setLabel(labelArr);
+          setgraphData(graphArr);
+        };
+        fetchCountByDiseaseAndArea();
 
       }
 
