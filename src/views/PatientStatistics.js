@@ -115,11 +115,10 @@ export default function PatientStatistics() {
           console.log("disease-geo combination");
 
          if(disease == "All"){
-        const fetchDiseaseDistributionOfAnArea = async () => {
+          const fetchDiseaseDistributionOfAnArea = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/area/${city}`
           );
-          console.log(result.data.data);
           let diseaseDistributionArr = result.data.data;
           let labelArr = [];
           let graphArr = [];
@@ -136,7 +135,6 @@ export default function PatientStatistics() {
           const result = await axios(
             `http://localhost:9090/statistics//patient/count/disease/${disease}`
           );
-          console.log(result.data.data);
           let areaDistributionArr = result.data.data;
           let labelArr = [];
           let graphArr = [];
@@ -153,7 +151,6 @@ export default function PatientStatistics() {
           const result = await axios(
             `http://localhost:9090/statistics//patient/count/disease/${disease}`
           );
-          console.log(result.data.data);
           let diseaseAreaArr = result.data.data;
           let labelArr = [];
           let graphArr = [];          
@@ -169,12 +166,64 @@ export default function PatientStatistics() {
         fetchCountByDiseaseAndArea();
 
       }
-
-
-
         } 
         else if ((firstCategory == "disease" || secondCategory == "disease") && (firstCategory=="gender" || secondCategory=="gender")){
           console.log("disease-gender combination");
+          if(disease =="All"){
+            const fetchDiseaseDistributionOfAGender = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/gender/disease/${gender}`
+              );
+              let GenderDistributionArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              GenderDistributionArr.forEach(element => {
+                labelArr.push(element.complain);
+                graphArr.push(element.total);
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchDiseaseDistributionOfAGender();
+          } else if(gender =="All"){
+            const fetchGenderDistributionOfADisease = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/disease/gender/${disease}`
+              );
+              let GenderDistributionArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              GenderDistributionArr.forEach(element => {
+                labelArr.push(element.gender);
+                graphArr.push(element.total);
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchGenderDistributionOfADisease();
+          } else {
+            const fetchCountByDiseaseAndGender = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/disease/gender/${disease}`
+              );
+              let GenderDiseaseArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              GenderDiseaseArr.forEach(element => {
+                if(element.gender == gender){
+                labelArr.push(`${gender} || ${disease}`);
+                graphArr.push(element.total);
+                }
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchCountByDiseaseAndGender();
+
+          }
+
+
+
         } else if((firstCategory == "gender" || secondCategory == "gender") && (firstCategory=="geography" || secondCategory=="geography")){
           console.log("geo-gender combination");
         }
