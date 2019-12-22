@@ -15,12 +15,8 @@ export default function PatientStatistics() {
     const [diseaseListWithCount, setdiseaseListWithCount] = useState({});
     const [GeographyListWithCount, setGeographyListWithCount] = useState({});
     const [selectedCategory,setSelectedCategory] = useState([]);
-    const [fetchApiValue , setFetchApiValue] = useState ({});
     const [label,setLabel] = useState([]);
     const [graphData,setgraphData] = useState([]);
-    const [value,setValue] = useState([1,3]);
-
-    let fetchApiObj = {};
 
     console.log("################RERENDER##########");
 
@@ -112,7 +108,13 @@ export default function PatientStatistics() {
         setgraphData(graphData => []); 
       } else if(selectedCategory.length == 2){
         console.log("two categories selected");
+        let firstCategory = selectedCategory[0];
+        let secondCategory = selectedCategory[1];
 
+        if ((firstCategory == "disease" || secondCategory == "disease") && (firstCategory=="geography" || secondCategory=="geography")){
+          console.log("disease-geo combination");
+
+         if(disease == "All"){
         const fetchDiseaseDistributionOfAnArea = async () => {
           const result = await axios(
             `http://localhost:9090/statistics/patient/count/area/${city}`
@@ -129,8 +131,41 @@ export default function PatientStatistics() {
           setgraphData(graphArr);
         };
         fetchDiseaseDistributionOfAnArea();
+      } else if(city == "All"){
+        const fetchAreaDistributionOfADisease = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics//patient/count/disease/${disease}`
+          );
+          console.log(result.data.data);
+          let areaDistributionArr = result.data.data;
+          let labelArr = [];
+          let graphArr = [];
+          areaDistributionArr.forEach(element => {
+            labelArr.push(element.district);
+            graphArr.push(element.total);
+          });
+          setLabel(labelArr);
+          setgraphData(graphArr);
+        };
+        fetchAreaDistributionOfADisease();
+      } else {
 
       }
+
+
+
+        } 
+        else if ((firstCategory == "disease" || secondCategory == "disease") && (firstCategory=="gender" || secondCategory=="gender")){
+          console.log("disease-gender combination");
+        } else if((firstCategory == "gender" || secondCategory == "gender") && (firstCategory=="geography" || secondCategory=="geography")){
+          console.log("geo-gender combination");
+        }
+
+
+      }
+
+
+
     },[disease,city,gender]);
 
     useEffect(() => {
