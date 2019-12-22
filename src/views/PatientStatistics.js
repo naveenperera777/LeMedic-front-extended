@@ -222,10 +222,62 @@ export default function PatientStatistics() {
 
           }
 
-
-
         } else if((firstCategory == "gender" || secondCategory == "gender") && (firstCategory=="geography" || secondCategory=="geography")){
           console.log("geo-gender combination");
+          if(city == "All"){
+            const fetchAreaDistributionOfAGender = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/district/gender/${gender}`
+              );
+              let AreaGenderArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              AreaGenderArr.forEach(element => {
+                labelArr.push(element.district);
+                graphArr.push(element.total);
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchAreaDistributionOfAGender();
+
+          } else if(gender == "All"){
+            const fetchGenderDistributionOfAnArea = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/gender/district/${city}`
+              );
+              let AreaGenderArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              AreaGenderArr.forEach(element => {
+                labelArr.push(element.gender);
+                graphArr.push(element.total);
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchGenderDistributionOfAnArea();
+
+          } else {
+            const fetchAreaAndGenderCount = async () => {
+              const result = await axios(
+                `http://localhost:9090/statistics/patient/count/gender/district/${city}`
+              );
+              let AreaGenderArr = result.data.data;
+              let labelArr = [];
+              let graphArr = [];
+              AreaGenderArr.forEach(element => {
+                if(element.gender == gender){
+                labelArr.push(`${gender} || ${city}`);
+                graphArr.push(element.total);
+                }
+              });
+              setLabel(labelArr);
+              setgraphData(graphArr);
+            };
+            fetchAreaAndGenderCount();
+
+          }
         }
 
 
