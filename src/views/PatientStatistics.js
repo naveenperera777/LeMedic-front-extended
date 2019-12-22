@@ -20,7 +20,6 @@ export default function PatientStatistics() {
     const [graphData,setgraphData] = useState([]);
     const [value,setValue] = useState([1,3]);
 
-    // let graphData = [];
     let fetchApiObj = {};
 
     console.log("################RERENDER##########");
@@ -111,6 +110,26 @@ export default function PatientStatistics() {
       } else if(selectedCategory.length == 0){
         setLabel(label => []);
         setgraphData(graphData => []); 
+      } else if(selectedCategory.length == 2){
+        console.log("two categories selected");
+
+        const fetchDiseaseDistributionOfAnArea = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/patient/count/area/${city}`
+          );
+          console.log(result.data.data);
+          let diseaseDistributionArr = result.data.data;
+          let labelArr = [];
+          let graphArr = [];
+          diseaseDistributionArr.forEach(element => {
+            labelArr.push(element.disease);
+            graphArr.push(element.total);
+          });
+          setLabel(labelArr);
+          setgraphData(graphArr);
+        };
+        fetchDiseaseDistributionOfAnArea();
+
       }
     },[disease,city,gender]);
 
