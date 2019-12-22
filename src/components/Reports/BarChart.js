@@ -1,6 +1,5 @@
 import React from "react";
-import { Grid, Row, Col,ListGroup,ListGroupItem,MenuItem,DropdownButton } from "react-bootstrap";
-import {Bar} from 'react-chartjs-2';
+import {Bar,Doughnut} from 'react-chartjs-2';
 
 
 export default function PatientStatistics(props) {
@@ -19,6 +18,26 @@ export default function PatientStatistics(props) {
             }
         ]
     };
+
+    const doughnutData = {
+        labels  : props.label,
+        datasets: [
+            {
+                data                : props.graphData,
+                backgroundColor     : [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ],
+                hoverBackgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56'
+                ]
+            }
+        ]
+    };
+    
 
     
   return (
@@ -43,8 +62,15 @@ export default function PatientStatistics(props) {
                         }
                       }]
                    }
-            }} />           
-              
+            }} />  
+            <Doughnut data={doughnutData}
+              options={{
+                title:{
+                  display:true,
+                  text:'Patient Count',
+                  fontSize:20
+                }
+            }}  />              
         </div>
    
     </div>
