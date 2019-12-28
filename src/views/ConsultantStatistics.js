@@ -9,6 +9,7 @@ export default function ConsultantStats() {
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [receipts, setReceipts] = useState([]);
+    const [count,setCount] = useState({});
 
 
     useEffect(() => {
@@ -18,7 +19,33 @@ export default function ConsultantStats() {
           );
           setReceipts(result.data.data);
         };
+       
+        const fetchSummaryData = async () => {
+        const headers = { headers: { 'from' :'0', 'to':'0'} };
+        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/4`;
+        let result;
+        try{
+          result = await axios.get(url,headers);
+          setRevenue(result.data.data);    
+        } catch(e){
+           console.log(e);
+        } 
+        };
+
+        const fetchPatientSessionCount = async () => {
+            const headers = { headers: { 'from' :'0', 'to':'0'} };
+            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/4`;
+            let result;
+            try{
+              result = await axios.get(url,headers);
+              setCount(result.data.data);    
+            } catch(e){
+               console.log(e);
+            } 
+            };
         fetchData();
+        fetchSummaryData();
+        fetchPatientSessionCount();
       }, []);
 
      async function onClickHandler(){
@@ -27,8 +54,6 @@ export default function ConsultantStats() {
         let result;
         try{
           result = await axios.get(url,headers);
-        //   console.log("revenue----->", result.data.data);        
-
           setRevenue(result.data.data);    
         } catch(e){
            console.log(e);
@@ -48,6 +73,7 @@ export default function ConsultantStats() {
       console.log("from",from,"to",to);
       console.log("revenue",revenue);
       console.log("receipts----->", receipts);
+      console.log("count----->", count);
 
  return (
     <div>
@@ -58,7 +84,7 @@ export default function ConsultantStats() {
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
                 statsText="Total Revenue"
-                statsValue="10005GB"
+                statsValue={"Rs." +  revenue["total"]}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -69,7 +95,7 @@ export default function ConsultantStats() {
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
                 statsText="Total Patients"
-                statsValue="10005GB"
+                statsValue={count["patientCount"]}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -80,7 +106,7 @@ export default function ConsultantStats() {
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
                 statsText="Total Sessions"
-                statsValue="10005GB"
+                statsValue={count["sessionCount"]}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -161,15 +187,31 @@ export default function ConsultantStats() {
           return (
             <Panel eventKey= {receipt.sessionId}>
             <Panel.Heading>
-            <Panel.Title toggle>{receipt.sessionId}</Panel.Title>
+            <Panel.Title toggle>Session ID : {receipt.sessionId}</Panel.Title>
             </Panel.Heading>
             <Panel.Body collapsible>
-                {receipt.consultationFees}
-                {receipt.medicationFees}
-                {receipt.miscellaneous}
-                {receipt.tax}
-                {receipt.total}
+            <Table striped bordered condensed hover>
+                 <tbody>
+                    <tr>
+                    <td><h6>Revenue from Consultation</h6></td>
+                    <td><h6>{receipt.consultationFees}</h6></td>
+                    </tr>
+                    <tr>
+                    <td><h6>Revenue Medication Fees</h6></td>
+                    <td><h6>{receipt.medicationFees}</h6></td>  
+                    </tr>
 
+                    <tr>
+                    <td><h6>Miscellaneous Revenue</h6></td>
+                    <td><h6>{receipt.miscellaneous}</h6></td>  
+                    </tr>
+
+                    <tr>
+                    <td><h6>Total</h6></td>
+                    <td><h6 class="text-success"> {receipt.total}</h6></td>  
+                    </tr>                
+                </tbody>
+            </Table>
             </Panel.Body>
         </Panel>
           );
