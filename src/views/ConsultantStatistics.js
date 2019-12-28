@@ -1,10 +1,43 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { Table,Form,FormGroup,FormControl,ControlLabel,Button,Label } from "react-bootstrap";
 import { Grid, Row, Col } from "react-bootstrap";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
+import axios from 'axios';
 
 export default function ConsultantStats() {
-  return (
+    const [revenue,setRevenue] = useState({});
+    const [from, setFrom] = useState("");
+    const [to, setTo] = useState("");
+
+     async function onClickHandler(){
+        const headers = { headers: { 'from' :from, 'to':to} };
+        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/4`;
+        let result;
+        try{
+          result = await axios.get(url,headers);
+        //   console.log("revenue----->", result.data.data);        
+
+          setRevenue(result.data.data);    
+        } catch(e){
+           console.log(e);
+        }   
+      }      
+
+      function onChangeHandler(event){
+          const type = event.target.id;
+          const value = event.target.value;
+          if(type == "From"){
+            setFrom(value);
+          } else {
+            setTo(value);
+          }
+      }
+      
+      console.log("from",from,"to",to);
+      console.log("revenue",revenue);
+
+
+ return (
     <div>
      <Grid fluid>
      <Row>
@@ -44,15 +77,15 @@ export default function ConsultantStats() {
     <Row>
     <Col xs={12} md={8} >
     <Form inline>
-        <FormGroup controlId="formInlineName">
+        <FormGroup controlId="From">
         <ControlLabel>From</ControlLabel>{' '}
-        <FormControl type="date" placeholder="Jane Doe" />
+        <FormControl type="date" placeholder="From" onChange={onChangeHandler}/>
         </FormGroup>{' '}
-    <FormGroup controlId="formInlineEmail">
+    <FormGroup controlId="To">
         <ControlLabel>To</ControlLabel>{' '}
-        <FormControl type="date" placeholder="jane.doe@example.com" />
+        <FormControl type="date" placeholder="To" onChange={onChangeHandler} />
     </FormGroup>{' '}
-    <Button bsStyle="primary">Generate</Button>    
+    <Button bsStyle="primary" onClick={onClickHandler}>Generate</Button>    
     </Form>
     </Col>
     </Row>  <br></br>    
@@ -62,18 +95,28 @@ export default function ConsultantStats() {
   <Table striped bordered condensed hover>
   <thead>
     <tr>
-      <th><h6>Revenue Type</h6></th>
-      <th>Amount</th>
+      <th><h6 class="text-primary">Revenue Type</h6></th>
+      <th><h6 class="text-primary">Amount</h6></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>ConsultantStats</td>
-      <td>Mark</td>
+      <td><h6>Total Revenue from Consultation</h6></td>
+    <td><h6>{revenue["totalConsultationFees"]}</h6></td>
     </tr>
     <tr>
-      <td>2</td>
-      <td>Jacob</td>  
+      <td><h6>Total Revenue Medication Fees</h6></td>
+      <td><h6>{revenue["totalMedicationFees"]}</h6></td>  
+    </tr>
+
+    <tr>
+      <td><h6>Total Miscellaneous Revenue</h6></td>
+      <td><h6>{revenue["totalMiscellaneous"]}</h6></td>  
+    </tr>
+
+    <tr>
+      <td><h6>Total Revenue</h6></td>
+      <td><h6 class="text-success">{revenue["total"]}</h6></td>  
     </tr>
   
   </tbody>
