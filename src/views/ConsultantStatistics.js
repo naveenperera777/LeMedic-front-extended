@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from "react";
-import { Table,Form,FormGroup,FormControl,ControlLabel,Button,Label } from "react-bootstrap";
+import { Table,Form,FormGroup,FormControl,ControlLabel,Button,Label,ListGroup,ListGroupItem,PanelGroup,Panel } from "react-bootstrap";
 import { Grid, Row, Col } from "react-bootstrap";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import axios from 'axios';
@@ -8,6 +8,18 @@ export default function ConsultantStats() {
     const [revenue,setRevenue] = useState({});
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
+    const [receipts, setReceipts] = useState([]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const result = await axios(
+            `http://localhost:9090/statistics/institute/consultant/receipt/4`
+          );
+          setReceipts(result.data.data);
+        };
+        fetchData();
+      }, []);
 
      async function onClickHandler(){
         const headers = { headers: { 'from' :from, 'to':to} };
@@ -35,7 +47,7 @@ export default function ConsultantStats() {
       
       console.log("from",from,"to",to);
       console.log("revenue",revenue);
-
+      console.log("receipts----->", receipts);
 
  return (
     <div>
@@ -73,7 +85,16 @@ export default function ConsultantStats() {
                 statsIconText="Updated now"
               />
               </Col>
-    </Row>    
+    </Row> 
+    <Row>
+    <Col xs={12} md={8} >
+        <ListGroup>
+        <ListGroupItem  bsStyle="success">
+            <h6>Revenue summary</h6>
+        </ListGroupItem>
+        </ListGroup>
+        </Col>
+    </Row>   
     <Row>
     <Col xs={12} md={8} >
     <Form inline>
@@ -123,6 +144,41 @@ export default function ConsultantStats() {
 </Table>
 </Col> 
 </Row> 
+<Row>
+    <Col xs={12} md={8} >
+        <ListGroup>
+        <ListGroupItem  bsStyle="success">
+            <h6>All Receipts</h6>
+        </ListGroupItem>
+        </ListGroup>
+        </Col>
+    </Row>  
+<Row>
+<Col xs={12} md={8} >
+    
+    <PanelGroup accordion id="accordion-example">
+    {receipts.map(receipt => {
+          return (
+            <Panel eventKey= {receipt.sessionId}>
+            <Panel.Heading>
+            <Panel.Title toggle>{receipt.sessionId}</Panel.Title>
+            </Panel.Heading>
+            <Panel.Body collapsible>
+                {receipt.consultationFees}
+                {receipt.medicationFees}
+                {receipt.miscellaneous}
+                {receipt.tax}
+                {receipt.total}
+
+            </Panel.Body>
+        </Panel>
+          );
+        })}
+</PanelGroup>
+    
+    </Col>
+</Row>
+
 </Grid>
 
     </div>
