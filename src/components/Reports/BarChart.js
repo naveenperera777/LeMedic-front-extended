@@ -27,7 +27,10 @@ export default function PatientStatistics(props) {
                 backgroundColor     : [
                     '#FF6384',
                     '#36A2EB',
-                    '#FFCE56'
+                    '#FFCE56',
+                    'FF6384',
+                    '#36A2EB'
+
                 ],
                 hoverBackgroundColor: [
                     '#FF6384',

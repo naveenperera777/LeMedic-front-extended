@@ -14,6 +14,7 @@ import UserForm from "views/UserMultiStepForm/UserForm";
 import PatientRegistration from "views/PatientRegistration/registerPatient";
 import PatientDashboard from "views/PatientDashboard";
 import PatientStatistics from "views/PatientStatistics";
+import ConsultantStats from "views/ConsultantStatistics";
 
 const dashboardRoutes = [
   {
@@ -32,9 +33,9 @@ const dashboardRoutes = [
   },
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Consultant Stats",
     icon: "pe-7s-graph",
-    component: Dashboard,
+    component: ConsultantStats,
     layout: "/admin"
   },
   {
