@@ -1,19 +1,21 @@
-
 import React, { Component } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
+import { Button } from "@material-ui/core";
 
-class AdminNavbarLinks extends Component {
-  render() {
-    const notification = (
-      <div>
-        <i className="fa fa-globe" />
-        <b className="caret" />
-        <span className="notification">5</span>
-        <p className="hidden-lg hidden-md">Notification</p>
-      </div>
-    );
-    return (
-      <div>
+
+export default function AdminNavbarLinks(props){
+  const notification = (
+    <div>
+      <i className="fa fa-globe" />
+      <b className="caret" />
+      <span className="notification">5</span>
+      <p className="hidden-lg hidden-md">Notification</p>
+    </div>
+  );
+
+  console.log("read",props.read);
+  return (
+    <div>
         <Nav>
           <NavItem eventKey={1} href="#">
             <i className="fa fa-dashboard" />
@@ -53,13 +55,9 @@ class AdminNavbarLinks extends Component {
             <MenuItem divider />
             <MenuItem eventKey={2.5}>Separated link</MenuItem>
           </NavDropdown>
-          <NavItem eventKey={3} href="#">
-            Log out
-          </NavItem>
+          <NavItem eventKey={4} onClick={props.logoutHandler}>Log out</NavItem>
         </Nav>
-      </div>
-    );
-  }
+    </div>
+    
+  );
 }
-
-export default AdminNavbarLinks;

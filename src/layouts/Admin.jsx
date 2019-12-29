@@ -5,7 +5,6 @@ import AdminNavbar from "components/Navbars/AdminNavbar";
 import Footer from "components/Footer/Footer";
 import Sidebar from "components/Sidebar/Sidebar";
 import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
-import UserProfile from "../views/UserList/userProfile"
 
 import { style } from "variables/Variables.jsx";
 
@@ -169,6 +168,7 @@ class Admin extends Component {
           <AdminNavbar
             {...this.props}
             brandText={this.getBrandText(this.props.location.pathname)}
+            logoutHandler={this.props.logoutHandler}
           />
           <Switch>{this.getRoutes(routes)}</Switch>
           <Footer />

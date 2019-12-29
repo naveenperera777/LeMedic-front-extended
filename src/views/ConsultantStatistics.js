@@ -57,7 +57,19 @@ export default function ConsultantStats() {
           setRevenue(result.data.data);    
         } catch(e){
            console.log(e);
-        }   
+        }
+        const fetchPatientSessionCount = async () => {
+            const headers = { headers: { 'from' :from, 'to':to} };
+            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/4`;
+            let result;
+            try{
+              result = await axios.get(url,headers);
+              setCount(result.data.data);    
+            } catch(e){
+               console.log(e);
+            } 
+            };
+            fetchPatientSessionCount();
       }      
 
       function onChangeHandler(event){
@@ -79,10 +91,10 @@ export default function ConsultantStats() {
     <div>
      <Grid fluid>
      <Row>
-            <Col lg={3} sm={6}>
+            <Col xs={6} md={4} >
                 <h3>Total Revenue</h3>
               <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
+                bigIcon={<i className="pe-7s-cash" />}
                 statsText="Total Revenue"
                 statsValue={"Rs." +  revenue["total"]}
                 statsIcon={<i className="fa fa-refresh" />}
@@ -90,10 +102,10 @@ export default function ConsultantStats() {
               />
               </Col>
 
-              <Col lg={3} sm={6}>
+              <Col xs={6} md={4} >
                 <h3>Total Patients</h3>
               <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
+                bigIcon={<i className="pe-7s-users" />}
                 statsText="Total Patients"
                 statsValue={count["patientCount"]}
                 statsIcon={<i className="fa fa-refresh" />}
@@ -101,10 +113,10 @@ export default function ConsultantStats() {
               />
               </Col>
 
-              <Col lg={3} sm={6}>
+              <Col xs={6} md={4} >
                 <h3>Total Sessions</h3>
               <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
+                bigIcon={<i className="pe-7s-helm" />}
                 statsText="Total Sessions"
                 statsValue={count["sessionCount"]}
                 statsIcon={<i className="fa fa-refresh" />}
@@ -113,7 +125,7 @@ export default function ConsultantStats() {
               </Col>
     </Row> 
     <Row>
-    <Col xs={12} md={8} >
+    <Col xs={12} >
         <ListGroup>
         <ListGroupItem  bsStyle="success">
             <h6>Revenue summary</h6>
@@ -171,7 +183,7 @@ export default function ConsultantStats() {
 </Col> 
 </Row> 
 <Row>
-    <Col xs={12} md={8} >
+    <Col xs={12} >
         <ListGroup>
         <ListGroupItem  bsStyle="success">
             <h6>All Receipts</h6>
