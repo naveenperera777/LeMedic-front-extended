@@ -233,7 +233,11 @@ export default function IntegrationAutosuggest(props) {
           "total": Pricing.total
         }
         const emailBody = {
-          "to": selected_user.email
+          "receiver": selected_user.email,
+          "title": `Medical report of ${selected_user.first_name} ${selected_user.last_name}`,
+          "diagnosis" :Diagnosis,
+          "medication": Medication,
+          "pricing": Pricing
         }
         await axios.post('http://localhost:9090/session/pricing', pricingBody,  headers);
         //send email
