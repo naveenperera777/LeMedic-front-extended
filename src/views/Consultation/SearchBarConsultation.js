@@ -16,6 +16,7 @@ import DiagnosisConsultation from "./DiagnosisConsultation.js";
 import MedicationsConsultation from "./MedicationsConsultation.js";
 import PricingConsultation from "./PricingConsultation.js";
 import ConfirmationConsultation from "./Confirmation.js";
+import ConfirmationModal from "./ConfirmationModal.js";
 const uuidv4 = require('uuid/v4');
 
 
@@ -91,8 +92,6 @@ function getSuggestions(value) {
 }
 
 function getSuggestionValue(suggestion) {
-  // selected_user.push(suggestion);
-  // console.log("select", selected_user);
   selected_user = suggestion;
   return suggestion.last_name;
 }
@@ -127,8 +126,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function IntegrationAutosuggest(props) {
   let stepperState = props.currentStepperState;
-  // let stepperState = 5;
-
 
   console.log("searchstate", props.currentStepperState);
 
@@ -235,7 +232,12 @@ export default function IntegrationAutosuggest(props) {
           "miscellaneous": Pricing.miscellaneous,
           "total": Pricing.total
         }
+        const emailBody = {
+          "to": selected_user.email
+        }
         await axios.post('http://localhost:9090/session/pricing', pricingBody,  headers);
+        //send email
+        await axios.post('http://localhost:9090/admin/email',emailBody,headers);
       setConfirmation(true);    
       console.log("result", result.data.data);
  
@@ -254,7 +256,7 @@ export default function IntegrationAutosuggest(props) {
   if(confirmation){
     return(
        <div>
-         <h1>Saved.....</h1>
+        <ConfirmationModal user={selected_user}/>
        </div>
      )  
      }

@@ -64,7 +64,6 @@ export default function PatientStatistics() {
                 for (let [key, value] of Object.entries(genderListWithCount)) {
                   labelArr.push(key);
                   graphArr.push(value);
-
                 }
                 setLabel(labelArr);
                 setgraphData(graphArr);
