@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
-import ChartistGraph from "react-chartist";
-import { Grid, Row, Col } from "react-bootstrap";
-import { Card } from "components/Card/Card.jsx";
+import { Grid, Row, Col, Table,FormGroup,ControlLabel,Form,FormControl,Button } from "react-bootstrap";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import { Tasks } from "components/Tasks/Tasks.jsx";
 import {
   dataPie,
   legendPie,
@@ -16,16 +13,25 @@ import {
   responsiveBar,
   legendBar
 } from "variables/Variables.jsx";
+import BarChart from "../components/Reports/BarChart"
 import axios from 'axios';
 
 export default function PatientDashboard() {
 
     const [count, setCount] = useState({});
     const [pricing, setPricing] = useState({});
+    const [from, setFrom] = useState("0");
+    const [to, setTo] = useState("0");
+    const [type, setType] = useState("month");
+    const [label,setLabel] = useState([]);
+    const [graphData,setgraphData] = useState([]);
+    const [leaderboard, setLeaderboard] = useState([]);
+    const [rank, setRank] = useState(0);
+    const [sessionArray, setSessionArray] = useState([]);
 
     useEffect(() => {         
         const fetchPatientSessionCount = async () => {
-          const headers = { headers: { 'from' :'0', 'to':'0'} };
+          const headers = { headers: { 'from' : from, 'to':to} };
           const url = `http://localhost:9090/statistics/institute/consultant/all/session/patient/count`;
           let result;
           try{
@@ -36,7 +42,7 @@ export default function PatientDashboard() {
           } 
           };
           const fetchPricingSummary = async () => {
-            const headers = { headers: { 'from' :'0', 'to':'0'} };
+            const headers = { headers: { 'from' :from, 'to':to} };
             const url = `http://localhost:9090/statistics/institute/consultant/all/pricing/summary`;
             let result;
             try{
@@ -46,23 +52,60 @@ export default function PatientDashboard() {
                console.log(e);
             } 
             };
+            const fetchLeaderboard = async () => {
+              const headers = { headers: { 'from' :from, 'to':to} };
+              const url = `http://localhost:9090/statistics/institute/consultant/all/leaderboard`;
+              let result;
+              try{
+                result = await axios.get(url,headers);
+                console.log("leader",result.data.data);
+                setLeaderboard(result.data.data);
+              } catch(e){
+                 console.log(e);
+              } 
+              };
           fetchPatientSessionCount();
           fetchPricingSummary();
+          fetchLeaderboard();
       }, []);
 
-    function createLegend(json) {
-        var legend = [];
-        for (var i = 0; i < json["names"].length; i++) {
-          var type = "fa fa-circle text-" + json["types"][i];
-          legend.push(<i className={type} key={i} />);
-          legend.push(" ");
-          legend.push(json["names"][i]);
+      function onChangeHandler(event){
+        const type = event.target.id;
+        const value = event.target.value;
+        if(type == "From"){
+          setFrom(value);
+        } else {
+          setTo(value);
         }
-        return legend;
+
+    }
+
+    async function onClickHandler(){
+      const headers = { headers: { 'from' :from, 'to':to, 'type': type} };
+      const url = `http://localhost:9090/statistics/institute/consultant/all/session/comparision`;
+      let result;
+      try{
+        result = await axios.get(url,headers);
+        let sessionArr = result.data.data;
+        let labelArr=[];
+        let dataArr = [];
+        sessionArr.forEach(element => {
+          labelArr.push(element["timestamp"]);
+          dataArr.push(element["total"]);
+        })
+        setLabel(labelArr);
+        setgraphData(dataArr);
+        setSessionArray(result.data.data);    
+      } catch(e){
+         console.log(e);
       }
+    }      
+
 
       console.log("count",count);
       console.log("pricing",pricing);
+      console.log("leaderboard",leaderboard);
+      console.log("session",sessionArray);
 
 
   return (
@@ -108,8 +151,46 @@ export default function PatientDashboard() {
             </Col>
           </Row>
           <Row>
-            <Col md={8}>
-              <Card
+            <Col xs={12} md={8} >
+            <Form inline>
+                <FormGroup controlId="From">
+                <ControlLabel>From</ControlLabel>{' '}
+                <FormControl type="date" placeholder="From" onChange={onChangeHandler}/>
+                </FormGroup>{' '}
+            <FormGroup controlId="To">
+                <ControlLabel>To</ControlLabel>{' '}
+                <FormControl type="date" placeholder="To" onChange={onChangeHandler} />
+            </FormGroup>{' '}
+            <Button bsStyle="primary" onClick={onClickHandler}>Generate</Button>    
+            </Form>
+            </Col>
+            </Row>  <br></br>    
+          <Row>
+            <Col md={12}>
+            <Table bordered>
+              <thead>
+                <tr>
+                  <th><h6># Rank</h6></th>
+                  <th><h6>First Name</h6></th>
+                  <th><h6>Last Name</h6></th>
+                  <th><h6>Count</h6></th>
+                </tr>
+              </thead>
+              <tbody>
+              {leaderboard.map(user => {
+                return(
+                <tr>
+                  <td>{rank}</td>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.count}</td>
+                </tr>               
+                );
+              })}
+                </tbody>
+                </Table>
+              </Col>
+              {/* <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
                 title="Users Behavior"
@@ -148,10 +229,16 @@ export default function PatientDashboard() {
                   <div className="legend">{createLegend(legendPie)}</div>
                 }
               />
-            </Col>
+            </Col> */}
           </Row>
 
           <Row>
+          <Col xs={12} md={8}>
+              <BarChart graphData={graphData} label={label} />
+            </Col>
+          </Row>
+
+          {/* <Row>
             <Col md={6}>
               <Card
                 id="chartActivity"
@@ -190,7 +277,7 @@ export default function PatientDashboard() {
                 }
               />
             </Col>
-          </Row>
+          </Row> */}
         </Grid>
       </div>
     </div>

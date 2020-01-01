@@ -9,16 +9,16 @@ import UserList from "views/UserList/userList";
 import Welcome from "views/welcome"
 import UserForm from "views/UserMultiStepForm/UserForm";
 import PatientRegistration from "views/PatientRegistration/registerPatient";
-import PatientDashboard from "views/PatientDashboard";
+import AdminDashboard from "views/AdminDashboard";
 import PatientStatistics from "views/PatientStatistics";
 import ConsultantStats from "views/ConsultantStatistics";
 
 const dashboardRoutes = [
   {
     path: "/patient/dashboard",
-    name: "Patient Dashboard",
+    name: "Admin Dashboard",
     icon: "pe-7s-users",
-    component: PatientDashboard,
+    component: AdminDashboard,
     layout: "/admin"
   },
   {

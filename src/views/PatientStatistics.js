@@ -1,9 +1,7 @@
 import React, { useState , useEffect } from "react";
 import { Grid, Row, Col,ListGroup,Table,ListGroupItem,MenuItem,Checkbox,DropdownButton,ButtonToolbar,ToggleButtonGroup,ToggleButton } from "react-bootstrap";
-import {Bar} from 'react-chartjs-2';
 import axios from 'axios';
 import BarChart from '../components/Reports/BarChart';
-import Typography from "material-ui/styles/typography";
 // CSS 57.9%	 JavaScript 41.5%	 HTML 0.6%
 
 export default function PatientStatistics() {
