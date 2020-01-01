@@ -20,17 +20,34 @@ import axios from 'axios';
 
 export default function PatientDashboard() {
 
-    const [patientCount, setpatientCount] = useState("");
+    const [count, setCount] = useState({});
+    const [pricing, setPricing] = useState({});
 
-    useEffect(() => {
-        const fetchData = async () => {
-          const result = await axios(
-            `http://localhost:9090/statistics/patient/count/total`
-          );
-          setpatientCount(result.data.data);
-          console.log("patientCount----->", patientCount);
-        };
-        fetchData();
+    useEffect(() => {         
+        const fetchPatientSessionCount = async () => {
+          const headers = { headers: { 'from' :'0', 'to':'0'} };
+          const url = `http://localhost:9090/statistics/institute/consultant/all/session/patient/count`;
+          let result;
+          try{
+            result = await axios.get(url,headers);
+            setCount({"sessionCount":result.data.data["sessionCount"],"patientCount":result.data.data["patientCount"]})  
+          } catch(e){
+             console.log(e);
+          } 
+          };
+          const fetchPricingSummary = async () => {
+            const headers = { headers: { 'from' :'0', 'to':'0'} };
+            const url = `http://localhost:9090/statistics/institute/consultant/all/pricing/summary`;
+            let result;
+            try{
+              result = await axios.get(url,headers);
+              setPricing({"ConsultationFees":result.data.data["totalConsultationFees"],"MedicationFees":result.data.data["totalMedicationFees"],"totalMiscellaneous":result.data.data["totalMiscellaneous"],"total":result.data.data["total"]});
+            } catch(e){
+               console.log(e);
+            } 
+            };
+          fetchPatientSessionCount();
+          fetchPricingSummary();
       }, []);
 
     function createLegend(json) {
@@ -44,6 +61,10 @@ export default function PatientDashboard() {
         return legend;
       }
 
+      console.log("count",count);
+      console.log("pricing",pricing);
+
+
   return (
     <div>
          <div className="content">
@@ -52,8 +73,8 @@ export default function PatientDashboard() {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-server text-warning" />}
-                statsText="Capacity"
-                statsValue="10005GB"
+                statsText="Revenue"
+                statsValue={pricing.total}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -61,8 +82,8 @@ export default function PatientDashboard() {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
-                statsText="Revenue"
-                statsValue="$1,345"
+                statsText="Sessions"
+                statsValue={count["sessionCount"]}
                 statsIcon={<i className="fa fa-calendar-o" />}
                 statsIconText="Last day"
               />
@@ -70,8 +91,8 @@ export default function PatientDashboard() {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-graph1 text-danger" />}
-                statsText="Errors"
-                statsValue="23"
+                statsText="Patients"
+                statsValue={count["patientCount"]}
                 statsIcon={<i className="fa fa-clock-o" />}
                 statsIconText="In the last hour"
               />
@@ -79,8 +100,8 @@ export default function PatientDashboard() {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-arc text-info" />}
-                statsText="Patients"
-                statsValue={patientCount}
+                statsText="Consultants"
+                statsValue={6}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
