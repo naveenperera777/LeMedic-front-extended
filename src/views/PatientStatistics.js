@@ -454,7 +454,7 @@ export default function PatientStatistics() {
 
           <Col xs={12} md={8}>
 
-            <BarChart label={label} graphData={graphData}/>             
+            <BarChart label={label} graphData={graphData} title="Patient Count"/>             
               
             </Col>
           </Row>

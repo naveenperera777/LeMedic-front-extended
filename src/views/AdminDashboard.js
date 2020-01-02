@@ -20,11 +20,14 @@ export default function PatientDashboard() {
 
     const [count, setCount] = useState({});
     const [pricing, setPricing] = useState({});
-    const [from, setFrom] = useState("0");
-    const [to, setTo] = useState("0");
+    const [from, setFrom] = useState('0');
+    const [to, setTo] = useState('0');
+    const [consultantCount, setconsultantCount] = useState(0);
     const [type, setType] = useState("month");
     const [label,setLabel] = useState([]);
     const [graphData,setgraphData] = useState([]);
+    const [revenueLabel,setrevenueLabel] = useState([]);
+    const [revenuegraphData,setrevenuegraphData] = useState([]);
     const [leaderboard, setLeaderboard] = useState([]);
     const [rank, setRank] = useState(0);
     const [sessionArray, setSessionArray] = useState([]);
@@ -64,10 +67,22 @@ export default function PatientDashboard() {
                  console.log(e);
               } 
               };
+              const fetchConsultantCount = async () => {
+                const url = `http://localhost:9090/statistics/institute/consultant/all/count`;
+                let result;
+                try{
+                  result = await axios.get(url);
+                  console.log("leader",result.data.data);
+                  setconsultantCount(result.data.data);
+                } catch(e){
+                   console.log(e);
+                } 
+                };
           fetchPatientSessionCount();
           fetchPricingSummary();
           fetchLeaderboard();
-      }, []);
+          fetchConsultantCount();
+      }, [sessionArray]);
 
       function onChangeHandler(event){
         const type = event.target.id;
@@ -77,7 +92,6 @@ export default function PatientDashboard() {
         } else {
           setTo(value);
         }
-
     }
 
     async function onClickHandler(){
@@ -99,14 +113,29 @@ export default function PatientDashboard() {
       } catch(e){
          console.log(e);
       }
-    }      
-
-
+      const revenueUrl = `http://localhost:9090/statistics/institute/consultant/all/revenue/comparision`;
+      let revenueRes;
+      try{
+        revenueRes = await axios.get(revenueUrl,headers);
+        let revenueArr = revenueRes.data.data;
+        let revenueLabel=[];
+        let dataArr = [];
+        revenueArr.forEach(element => {
+          revenueLabel.push(element["timestamp"]);
+          dataArr.push(element["total"]);
+        })
+        setrevenueLabel(revenueLabel);
+        setrevenuegraphData(dataArr);
+        setSessionArray(result.data.data);    
+      } catch(e){
+         console.log(e);
+      }
+    }  
+      console.log("from: ", from, "to ", to);
       console.log("count",count);
       console.log("pricing",pricing);
       console.log("leaderboard",leaderboard);
       console.log("session",sessionArray);
-
 
   return (
     <div>
@@ -144,7 +173,7 @@ export default function PatientDashboard() {
               <StatsCard
                 bigIcon={<i className="pe-7s-arc text-info" />}
                 statsText="Consultants"
-                statsValue={6}
+                statsValue={consultantCount}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -164,7 +193,15 @@ export default function PatientDashboard() {
             <Button bsStyle="primary" onClick={onClickHandler}>Generate</Button>    
             </Form>
             </Col>
-            </Row>  <br></br>    
+            </Row> 
+            <Row>
+          <Col xs={12} md={8}>
+              <BarChart graphData={graphData} label={label} title="Session Comparison" />
+            </Col>
+            <Col xs={12} md={8}>
+              <BarChart graphData={revenuegraphData} label={revenueLabel} title="Revenue Comparison" />
+            </Col>
+          </Row>  
           <Row>
             <Col md={12}>
             <Table bordered>
@@ -180,7 +217,7 @@ export default function PatientDashboard() {
               {leaderboard.map(user => {
                 return(
                 <tr>
-                  <td>{rank}</td>
+                  <td>{user.rank}</td>
                   <td>{user.firstName}</td>
                   <td>{user.lastName}</td>
                   <td>{user.count}</td>
@@ -190,94 +227,7 @@ export default function PatientDashboard() {
                 </tbody>
                 </Table>
               </Col>
-              {/* <Card
-                statsIcon="fa fa-history"
-                id="chartHours"
-                title="Users Behavior"
-                category="24 Hours performance"
-                stats="Updated 3 minutes ago"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataSales}
-                      type="Line"
-                      options={optionsSales}
-                      responsiveOptions={responsiveSales}
-                    />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{createLegend(legendSales)}</div>
-                }
-              />
-            </Col>
-            <Col md={4}>
-              <Card
-                statsIcon="fa fa-clock-o"
-                title="Email Statistics"
-                category="Last Campaign Performance"
-                stats="Campaign sent 2 days ago"
-                content={
-                  <div
-                    id="chartPreferences"
-                    className="ct-chart ct-perfect-fourth"
-                  >
-                    <ChartistGraph data={dataPie} type="Pie" />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{createLegend(legendPie)}</div>
-                }
-              />
-            </Col> */}
-          </Row>
-
-          <Row>
-          <Col xs={12} md={8}>
-              <BarChart graphData={graphData} label={label} />
-            </Col>
-          </Row>
-
-          {/* <Row>
-            <Col md={6}>
-              <Card
-                id="chartActivity"
-                title="2014 Sales"
-                category="All products including Taxes"
-                stats="Data information certified"
-                statsIcon="fa fa-check"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataBar}
-                      type="Bar"
-                      options={optionsBar}
-                      responsiveOptions={responsiveBar}
-                    />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{createLegend(legendBar)}</div>
-                }
-              />
-            </Col>
-
-            <Col md={6}>
-              <Card
-                title="Tasks"
-                category="Backend development"
-                stats="Updated 3 minutes ago"
-                statsIcon="fa fa-history"
-                content={
-                  <div className="table-full-width">
-                    <table className="table">
-                      <Tasks />
-                    </table>
-                  </div>
-                }
-              />
-            </Col>
-          </Row> */}
+          </Row>     
         </Grid>
       </div>
     </div>

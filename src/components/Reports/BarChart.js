@@ -8,7 +8,7 @@ export default function PatientStatistics(props) {
         labels  : props.label,
         datasets: [
             {
-                label               : 'Patient Count',
+                label               : props.title,
                 backgroundColor     : 'rgba(255,99,132,0.2)',
                 borderColor         : 'rgba(255,99,132,1)',
                 borderWidth         : 1,
@@ -18,30 +18,6 @@ export default function PatientStatistics(props) {
             }
         ]
     };
-
-    const doughnutData = {
-        labels  : props.label,
-        datasets: [
-            {
-                data                : props.graphData,
-                backgroundColor     : [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56',
-                    'FF6384',
-                    '#36A2EB'
-
-                ],
-                hoverBackgroundColor: [
-                    '#FF6384',
-                    '#36A2EB',
-                    '#FFCE56'
-                ]
-            }
-        ]
-    };
-    
-
     
   return (
     <div>
@@ -53,7 +29,7 @@ export default function PatientStatistics(props) {
             options={{
                 title:{
                   display:true,
-                  text:'Patient Count',
+                  text:props.title,
                   fontSize:20
                 },
                 scales: {
@@ -66,14 +42,7 @@ export default function PatientStatistics(props) {
                       }]
                    }
             }} />  
-            <Doughnut data={doughnutData}
-              options={{
-                title:{
-                  display:true,
-                  text:'Patient Count',
-                  fontSize:20
-                }
-            }}  />              
+               
         </div>
    
     </div>
