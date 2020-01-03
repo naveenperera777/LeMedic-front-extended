@@ -196,10 +196,10 @@ export default function PatientDashboard() {
             </Row> 
             <Row>
           <Col xs={12} md={8}>
-              <BarChart graphData={graphData} label={label} title="Session Comparison" />
+              <BarChart graphData={graphData} label={label} title="Session Comparison" color="rgb(68, 90, 216)"/>
             </Col>
             <Col xs={12} md={8}>
-              <BarChart graphData={revenuegraphData} label={revenueLabel} title="Revenue Comparison" />
+              <BarChart graphData={revenuegraphData} label={revenueLabel} title="Revenue Comparison" color="rgb(83, 219, 81)"/>
             </Col>
           </Row>  
           <Row>

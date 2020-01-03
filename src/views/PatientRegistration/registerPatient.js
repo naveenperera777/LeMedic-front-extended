@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  FormControl,
-  InputLabel,
-  Input,
-  Button,
-  TextField
-} from "@material-ui/core";
+import {Col,Form,FormControl,FormGroup, ControlLabel, HelpBlock} from 'react-bootstrap';
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Select from '@material-ui/core/Select';
+
 const uuidv4 = require('uuid/v4');
 
 
@@ -33,25 +25,37 @@ export default function RegisterPatient(props) {
   const [mobile, setMobile] = useState("");
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
-
-  useEffect(() => {}, []);
+  const [errors , setErrors] = useState({});
 
   function handleChange(event) {
-    console.log("event details", event)
     if(event.target.id !== undefined){
+      const { id, name, value } = event.target;
+      console.log("id",id,"value",value, "length",value.length);
     switch(event.target.id){
       case "fname":
-          setFirstName(event.target.value);
+          if(value.length < 6){
+            setErrors(errors => ({ ...errors, [id]: value}));
+          }
+          setFirstName(value);
+          break;
       case "lname":
-          setLastName(event.target.value);
+        if(value.length <6){
+          setErrors(errors => ({ ...errors, [id]: value}));
+        }
+          setLastName(value);
+          break;
       case "nic":
-          setNIC(event.target.value);    
+          setNIC(event.target.value);  
+          break;  
       case "email":
-          setEmail(event.target.value);      
+          setEmail(event.target.value); 
+          break;     
       case "mobile":
           setMobile(event.target.value);
+          break;
       case "city":
           setCity(event.target.value);
+          break;
       case "district":
           setDistrict(event.target.value);
      }
@@ -61,7 +65,7 @@ export default function RegisterPatient(props) {
 
     console.log(event.target.id, "value", event.target.value);
   }
-
+  console.log("errors",errors);
   console.log("fname", fname, "lname", lname, "gender", gender, "nic", nic, "email", email, "mobile", mobile, "city", city, "district", district);
 
   const form_data = {
@@ -85,9 +89,41 @@ export default function RegisterPatient(props) {
     });
   };
 
+  function getValidationState(){
+    return 'success';
+  }
+
   return (
-    <div>
-      <form className={classes.form}>
+    <div className="content">
+      <h3>Register Patient</h3><br></br>
+     
+    <form>
+     {/* <Form> */}
+       <FormGroup
+          controlId="formBasicText"
+          validationState={getValidationState}
+        >
+          <ControlLabel>First Name </ControlLabel>
+          <FormControl
+            type="text"
+            id="fname"
+            placeholder="Enter First Name"
+            onChange={handleChange}
+          />
+          <FormControl.Feedback />
+
+          <ControlLabel>Last Name </ControlLabel>
+          <FormControl
+            type="text"
+            id="lname"
+            placeholder="Enter Last"
+            onChange={handleChange}
+          />
+          <FormControl.Feedback />
+        </FormGroup>
+        {/* </Form> */}
+        </form>
+      {/* <form className={classes.form}>
         <h3>Register a Patient</h3>
 
         <label>First Name</label>
@@ -175,7 +211,7 @@ export default function RegisterPatient(props) {
         >
           Submit
         </Button>
-      </form>
+      </form> */}
     </div>
   );
 }

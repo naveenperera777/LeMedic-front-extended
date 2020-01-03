@@ -9,11 +9,11 @@ export default function PatientStatistics(props) {
         datasets: [
             {
                 label               : props.title,
-                backgroundColor     : 'rgba(255,99,132,0.2)',
-                borderColor         : 'rgba(255,99,132,1)',
+                backgroundColor     : props.color,
+                borderColor         : props.color,
                 borderWidth         : 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor    : 'rgba(255,99,132,1)',
+                hoverBackgroundColor: props.color,
+                hoverBorderColor    : props.color,
                 data                : props.graphData
             }
         ]
