@@ -163,7 +163,6 @@ export default function IntegrationAutosuggest(props) {
   function checkValidation(type,val,addOrDel){
     if(addOrDel == "add"){
       console.log("validation checked",type,val)
-      setErrors({'ab':"ds"});
     } else {
       console.log("delete")
     }
@@ -279,7 +278,7 @@ export default function IntegrationAutosuggest(props) {
      )  
      }
          
-  switch (3) {
+  switch (stepperState) {
     case 0:
       return (
         <div className={classes.root}>

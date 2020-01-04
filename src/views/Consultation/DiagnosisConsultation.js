@@ -13,8 +13,6 @@ export default function FormUserDetails(props) {
   const [validationCount , setValidationCount] = useState(0);
   const [validationState , setvalidationState] = useState('');
 
-
-
   function getValidationState(type) {
     if( type in props.diagnosisData){
       let len = props.diagnosisData[type].length;
