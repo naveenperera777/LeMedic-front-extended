@@ -10,25 +10,38 @@ export default function FormUserDetails(props) {
 
   const [state, setState] = React.useState({});
   const [errors , setErrors] = useState({});
+  const [validationCount , setValidationCount] = useState(0);
+  const [validationState , setvalidationState] = useState('');
 
 
 
   function getValidationState(type) {
     if( type in props.diagnosisData){
       let len = props.diagnosisData[type].length;
-      console.log("yes it is" ,len);
       if(len<6 && len>=4) return 'warning';
       if(len<4){
-        props.checkValidation("diagnosis");
+        // props.checkValidation("diagnosis","type","add");
       return 'error';
+      // setvalidationState('error');
       }
       if(len>=6){
+        // props.checkValidation("diagnois","type","del")
+        // setValidationCount(1);
+        // setvalidationState('success');
         return 'success';
       } 
     } else {
+      // console.log('null')
       return null;
     }
   }
+
+  // function onChangeHanler(){
+  //   console.log('onChangeHanler');
+  //   props.handleDiagnosisChange("complain");
+  //   getValidationState("complain");
+  // }
+  console.log(validationCount)
   return (
     <div>
        <Form>

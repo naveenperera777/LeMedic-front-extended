@@ -1,56 +1,53 @@
 import React, { useState, useEffect } from "react";
-import {
-  FormControl,
-  InputLabel,
-  Input,
-  Button,
-  TextField
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-
-const useStyles = makeStyles({
-  form: {
-    maxWidth: 345,
-    marginLeft: 10,
-    marginBottom: 30,
-    marginTop: 10
-  }
-});
+import {Button,Alert,Form,FormControl,FormGroup, ControlLabel, ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
 
 export default function FormUserDetails(props) {
-  const classes = useStyles();
 
   useEffect(() => {}, []);
 
+  function getValidationState(type) {
+    if( type in props.medicationData){
+      let len = props.medicationData[type].length;
+      if(len<6 && len>=4) return 'warning';
+      if(len<4){
+      return 'error';
+      }
+      if(len>=6){
+        return 'success';
+      } 
+    } else {
+      return null;
+    }
+  }
+
   return (
     <div>
-      <form className={classes.form}>
-         <label>Medical Management</label>
-        <textarea class="form-control" placeholder="Here can be your nice text" rows="3"
-            id="medmgt"
-            type="text"
-            onChange={props.handleMedicationChange("medicalmgt")}
-            value={props.medicationData.medicalmgt} />
-         <label>Surgical Management (Optional)</label>
-        <textarea class="form-control" placeholder="Here can be your nice text" rows="3"
-            id="surgicalmgt"
-            type="text"
-            onChange={props.handleMedicationChange("surgicalmgt")}
-            value={props.medicationData.surgicalmgt} />
-            
-         <label>Special Remarks (Optional)</label>
-        <textarea class="form-control" placeholder="Here can be your nice text" rows="3"
-            id="remarks"
-            type="text"
+      <Form>
+      <FormGroup controlId="medicalmgt" validationState={getValidationState("medicalmgt")}>
+                <ControlLabel>Medical Management</ControlLabel>{' '}
+                <FormControl componentClass="textarea" placeholder="Enter Patient's Medical management details" 
+                  onChange={props.handleMedicationChange("medicalmgt")}
+                  value={props.medicationData.medicalmgt} />
+                </FormGroup>{' '}
+      <FormGroup controlId="surgicalmgt" validationState={getValidationState("surgicalmgt")}>
+                <ControlLabel>Surgical Management</ControlLabel>{' '}
+                <FormControl componentClass="textarea" placeholder="Enter Patient's Surgical management details" 
+                  onChange={props.handleMedicationChange("surgicalmgt")}
+                  value={props.medicationData.surgicalmgt} />
+                </FormGroup>{' '}
+          <FormGroup controlId="remarks" validationState={getValidationState("remarks")}>
+          <ControlLabel>Special Remarks (Optional)</ControlLabel>{' '}
+          <FormControl componentClass="textarea" placeholder="Enter Special Remarks" 
             onChange={props.handleMedicationChange("remarks")}
-            value={props.medicationData.remarks} />     
-      <label>Next Date (Optional)</label> 
-      <textarea class="form-control" placeholder="Here can be your nice text" rows="3"
-        id="nextdate"
-        type="text"
-        onChange={props.handleMedicationChange("nextdate")}
-        value={props.medicationData.nextdate} />        
-      </form>
+            value={props.medicationData.remarks} />
+          </FormGroup>{' '}
+            <FormGroup controlId="nextdate" validationState={getValidationState("nextdate")}>
+            <ControlLabel>Next Date (Optional)</ControlLabel>{' '}
+            <FormControl type="date" placeholder="Enter Patient's medical management details" 
+              onChange={props.handleMedicationChange("nextdate")}
+              value={props.medicationData.nextdate} />
+            </FormGroup>{' '}
+      </Form>      
     </div>
   );
 }

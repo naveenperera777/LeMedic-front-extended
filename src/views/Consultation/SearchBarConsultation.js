@@ -160,6 +160,17 @@ export default function IntegrationAutosuggest(props) {
   const [errors , setErrors] = useState({});
 
 
+  function checkValidation(type,val,addOrDel){
+    if(addOrDel == "add"){
+      console.log("validation checked",type,val)
+      setErrors({'ab':"ds"});
+    } else {
+      console.log("delete")
+    }
+
+    props.checkValidation();
+  }
+
 
   const handleSuggestionsFetchRequested = ({ value }) => {
     setSuggestions(getSuggestions(value));
@@ -249,10 +260,6 @@ export default function IntegrationAutosuggest(props) {
  
   }
 
-  function checkValidation(val){
-    console.log("validation checked",val)
-    props.checkValidation();
-  }
 
   
   const autosuggestProps = {
@@ -272,7 +279,7 @@ export default function IntegrationAutosuggest(props) {
      )  
      }
          
-  switch (2) {
+  switch (3) {
     case 0:
       return (
         <div className={classes.root}>
