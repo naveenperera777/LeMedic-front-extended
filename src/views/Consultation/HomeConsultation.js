@@ -28,6 +28,8 @@ export default function CustomizedTables(props) {
   }));
 
   const [stepperState, setstepperState] = useState(0);
+  const [active, isActive] = useState(false);
+
 
   useEffect(() => {}, []);
 
@@ -41,15 +43,21 @@ export default function CustomizedTables(props) {
     setstepperState(stepperState - 1);
   }
 
+  function checkValidation(){
+    console.log("validation checked")
+    isActive(true);
+  }
+
   return (
     <div>
       <Paper className={classes.root}>
-        <SearchBarConsultation currentStepperState={stepperState} />
+        <SearchBarConsultation currentStepperState={stepperState} checkValidation={checkValidation}/>
       </Paper>
       <Paper className={classes.stepper}>
         <StepperConsultation
           stepperNextFunc={ChangeNextStepperState}
           stepperBackFunc={ChangeBackStepperState}
+          isActive={active}
         />
       </Paper> 
     </div>

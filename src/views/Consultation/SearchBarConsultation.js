@@ -148,8 +148,7 @@ export default function IntegrationAutosuggest(props) {
     single: "",
     popper: ""
   });
-  const [Diagnosis, setDiagnosis] =React.useState({
-  });
+  const [Diagnosis, setDiagnosis] =React.useState({});
   const [Medication, setMedication] =React.useState({
   });
   const [Pricing, setPricing] =React.useState({
@@ -157,6 +156,9 @@ export default function IntegrationAutosuggest(props) {
   const [stateSuggestions, setSuggestions] = React.useState([]);
 
   const [confirmation, setConfirmation] = useState(false);
+
+  const [errors , setErrors] = useState({});
+
 
 
   const handleSuggestionsFetchRequested = ({ value }) => {
@@ -247,6 +249,11 @@ export default function IntegrationAutosuggest(props) {
  
   }
 
+  function checkValidation(val){
+    console.log("validation checked",val)
+    props.checkValidation();
+  }
+
   
   const autosuggestProps = {
     renderInputComponent,
@@ -265,7 +272,7 @@ export default function IntegrationAutosuggest(props) {
      )  
      }
          
-  switch (stepperState) {
+  switch (2) {
     case 0:
       return (
         <div className={classes.root}>
@@ -306,6 +313,7 @@ export default function IntegrationAutosuggest(props) {
           <DiagnosisConsultation
           handleDiagnosisChange = {diagnosisChangeHandler}
           diagnosisData = {Diagnosis}
+          checkValidation = {checkValidation}
           />
         </div>
       );

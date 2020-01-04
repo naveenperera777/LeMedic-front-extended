@@ -166,7 +166,7 @@ export default function RegisterPatient(props) {
       <h3>Register Patient</h3><br></br>
      
             <Form>
-                <FormGroup controlId="fname" validationState="success">
+                <FormGroup controlId="fname">
                 <ControlLabel>First Name</ControlLabel>{' '}
                 <FormControl type="text" placeholder="Enter First Name" onChange={handleChange}/>
                 {errors.fname && 

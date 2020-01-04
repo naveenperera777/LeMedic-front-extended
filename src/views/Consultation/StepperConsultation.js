@@ -102,13 +102,28 @@ export default function HorizontalLabelPositionBelowStepper(props) {
               >
                 Back
               </Button>
-              <Button
+              {
+                props.isActive ? (
+                  <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleNext}  
+                >{activeStep === steps.length - 1 ? "Finish" : "Next"}
+                </Button>
+                ) : (
+                  <Button variant="contained" disabled>
+                  Disabled
+                </Button>
+                )
+              }
+              {/* <Button
                 variant="contained"
                 color="secondary"
                 onClick={handleNext}
+
               >
                 {activeStep === steps.length - 1 ? "Finish" : "Next"}
-              </Button>
+              </Button> */}
             </div>
           </div>
         )}
