@@ -15,8 +15,6 @@ export default function RegisterPatient(props) {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [errors , setErrors] = useState({});
-  const [active, setActive] = useState(false);
-
   // useEffect(() => {      
   //     getFormSuccessState();
   //  },[]);
