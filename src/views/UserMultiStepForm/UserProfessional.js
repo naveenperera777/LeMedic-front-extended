@@ -5,6 +5,14 @@ export default function UserProfessional(props) {
 
   useEffect(() => {}, []);
 
+  function getFormSuccessState(){
+    console.log("error length>",Object.keys(props.errors).length);
+    if(Object.keys(props.errors).length == 0 && props.email && props.nic){
+     return true;
+    }
+    return false;
+  }
+
   return (
     <div className="content">
       <Form>
@@ -36,12 +44,22 @@ export default function UserProfessional(props) {
         </ButtonToolbar>
         </FormGroup>
           <ButtonToolbar>
-          <Button bsStyle="primary" bsSize="success" onClick={props.handleBack}>
-              Back
-            </Button>
-            <Button bsStyle="primary" bsSize="default" onClick={props.handleSubmit}>
-              Submit
-            </Button>
+          {
+                getFormSuccessState() ? (
+                  <Button bsStyle="success" bsSize="default" onClick={props.handleBack}>Back</Button>
+                ) : (
+                  <Button bsStyle="success" bsSize="default" disabled>Back</Button>         
+                )
+              }             
+       
+              {
+                getFormSuccessState() ? (
+                  <Button bsStyle="primary" bsSize="default"  onClick={props.handleSubmit} active>Submit</Button>
+                ) : (
+                <Button bsStyle="primary" bsSize="default"  disabled>Submit</Button>           
+                )
+              }
+   
           </ButtonToolbar>
     </Form>
     </div>

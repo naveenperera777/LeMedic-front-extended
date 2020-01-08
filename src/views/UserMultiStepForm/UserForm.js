@@ -39,23 +39,23 @@ export default function UserForm() {
 
   function handleChange(event) {
     const { id, value } = event.target;
-    console.log("event details", event)
+    console.log("event details", event.target.id)
     if(event.target.id !== undefined){
     switch(event.target.id){
       case "fname":
+        setFirstName(value);
         if(!validateField(id,value)){
           setErrors(errors => ({ ...errors, [id]: 'First Name must be at least 2 Characters long without special characters!'}));
         } else {
           delete errors.fname;
-          setFirstName(value);
         }
         break;
       case "lname":
+        setLastName(value);
         if(!validateField(id,value)){
           setErrors(errors => ({ ...errors, [id]: 'Last Name must be at least 2 Characters long without special characters!'}));
         } else {
           delete errors.lname;
-          setLastName(value);
         }
         break;
       case "nic":
@@ -67,11 +67,11 @@ export default function UserForm() {
         }
         break;
       case "email":
+        setEmail(value);
         if(!validateField(id,value)){
           setErrors(errors => ({ ...errors, [id]: 'Invalid Email format!'}));
         } else {
           delete errors.email;
-          setEmail(value);
         }
         break;
       case "role":
@@ -144,6 +144,8 @@ export default function UserForm() {
           onSelectRole={onSelectRole}
           errors={errors}
           handleBack={handleBack}
+          nic={nic}
+          email={email}
         />
       </div>
     );

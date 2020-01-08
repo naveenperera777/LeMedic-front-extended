@@ -9,9 +9,12 @@ export default function FormUserDetails(props) {
   const [errors, setErrors] =  useState({});
 
 
- 
-  function onSelect(){
-
+  function getFormSuccessState(){
+    console.log("error length>",Object.keys(props.errors).length);
+    if(Object.keys(props.errors).length == 0 && props.firstname && props.lastname){
+     return true;
+    }
+    return false;
   }
  
   return (
@@ -19,7 +22,7 @@ export default function FormUserDetails(props) {
             <Form>
                 <FormGroup controlId="fname">
                 <ControlLabel>First Name</ControlLabel>{' '}
-                <FormControl type="text" placeholder="Enter First Name" onChange={props.handleChange} value={props.fname}/>
+                <FormControl type="text" placeholder="Enter First Name" onChange={props.handleChange} value={props.firstname}/>
                 {props.errors.fname && 
                 <Alert bsStyle="danger">
                 <strong>{props.errors.fname}</strong>
@@ -28,7 +31,7 @@ export default function FormUserDetails(props) {
                 </FormGroup>{' '}
             <FormGroup controlId="lname">
                 <ControlLabel>Last Name</ControlLabel>{' '}
-                <FormControl type="text" placeholder="Enter Last Name" onChange={props.handleChange} value={props.lname}/>
+                <FormControl type="text" placeholder="Enter Last Name" onChange={props.handleChange} value={props.lastname}/>
                 {props.errors.lname && 
                 <Alert bsStyle="danger">
                 <strong>{props.errors.lname}</strong>
@@ -44,11 +47,23 @@ export default function FormUserDetails(props) {
               </DropdownButton>
             </ButtonToolbar>
             </FormGroup>
-            <ButtonToolbar>
+            {/* <ButtonToolbar>
+              {
+                
+              }
             <Button bsStyle="primary" bsSize="default" onClick={props.stage}>
               Next
             </Button>
-          </ButtonToolbar>
+          </ButtonToolbar> */}
+          <ButtonToolbar>
+              {
+                getFormSuccessState() ? (
+                  <Button bsSize="large" bsStyle="primary" block onClick={props.stage} active>Next</Button>
+                ) : (
+                <Button bsSize="large" bsStyle="primary" block disabled>Next</Button>           
+                )
+              }
+             </ButtonToolbar>
             </Form>
     </div>
   );
