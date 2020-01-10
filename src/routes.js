@@ -15,21 +15,21 @@ import ConsultantStats from "views/ConsultantStatistics";
 
 const dashboardRoutes = [
   {
-    path: "/patient/dashboard",
+    path: "/admin/dashboard",
     name: "Admin Dashboard",
     icon: "pe-7s-users",
     component: AdminDashboard,
     layout: "/admin"
   },
   {
-    path: "/statistics/patient",
+    path: "/patient/dashboard",
     name: "Patient Statistics",
     icon: "pe-7s-id",
     component: PatientStatistics,
     layout: "/admin"
   },
   {
-    path: "/dashboard",
+    path: "/consultant/dashboard",
     name: "Consultant Stats",
     icon: "pe-7s-graph",
     component: ConsultantStats,

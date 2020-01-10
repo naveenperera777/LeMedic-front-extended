@@ -59,11 +59,11 @@ export default function UserForm() {
         }
         break;
       case "nic":
+        setNIC(value);
         if(!validateField(id,value)){
           setErrors(errors => ({ ...errors, [id]: 'Invalid NIC format!'}));
         } else {
           delete errors.nic;
-          setNIC(value);
         }
         break;
       case "email":

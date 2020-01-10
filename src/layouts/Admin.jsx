@@ -21,7 +21,8 @@ class Admin extends Component {
       image: image,
       color: "black",
       hasImage: true,
-      fixedClasses: "dropdown show-dropdown open"
+      fixedClasses: "dropdown show-dropdown open",
+      user: {}
     };
   }
   
@@ -48,8 +49,7 @@ class Admin extends Component {
       title: <span data-notify="icon" className="pe-7s-gift" />,
       message: (
         <div>
-          {/* Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful freebie for
-          every web developer. */}
+    
         </div>
       ),
       level: level,
@@ -60,8 +60,12 @@ class Admin extends Component {
   
   getRoutes = routes => {
     return routes.map((prop, key) => {
+      console.log("this user", this.state.user["role"], prop.path )
+      if(this.state.user.role == "Consultant" && prop.path === "/admin/dashboard"){
+        console.log("non admin route");
+      } else {
         return (
-          <Route
+            <Route
             path={prop.layout + prop.path}
             render={props => (
               <prop.component
@@ -72,24 +76,25 @@ class Admin extends Component {
             key={key}
           />
         );
+      }
     });
   };
   getBrandText = path => {
     for (let i = 0; i < routes.length; i++) {
+      if(this.state.user.role == "Consultant" && routes[i].path !== "/admin/dashboard"){
+        console.log("non admin route name");
+      } else {        
       if(routes[i].name !== "create"){
         console.log("route name -->" , this.props.location.pathname)
       if (
         this.props.location.pathname.indexOf(
           routes[i].layout + routes[i].path
         ) !== -1
-      ) {
-        // if(routes[i].name === "create"){
-        
-        // } else {
+      ) {  
           return routes[i].name;
-        // }
       }
     }
+  }
     }
     return "Brand";
   };
@@ -110,6 +115,7 @@ class Admin extends Component {
     }
   };
   componentDidMount() {
+    this.setState({user: this.props.loggedInUser})
     this.setState({ _notificationSystem: this.refs.notificationSystem });
     var _notificationSystem = this.refs.notificationSystem;
     var color = Math.floor(Math.random() * 4 + 1);
