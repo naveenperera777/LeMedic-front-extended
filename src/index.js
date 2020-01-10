@@ -9,10 +9,8 @@ import "./assets/css/demo.css";
 import "./assets/css/pe-icon-7-stroke.css";
 import UserProfile from "./views/UserList/userProfile";
 import UserList from "./views/UserList/userList";
-import Welcome from "./views/welcome"
 import AdminNavbar from "./components/Navbars/AdminNavbar";
 import App from "./App.js";
-import AdminLayout from "layouts/Admin.jsx";
 
 ReactDOM.render(<App />,
   document.getElementById("root")

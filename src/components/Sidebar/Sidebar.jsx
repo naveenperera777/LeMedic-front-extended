@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
 
-import logo from "assets/img/reactlogo.png";
+import logo from "assets/img/logo.png";
 
 class Sidebar extends Component {
   constructor(props) {
@@ -41,19 +41,17 @@ class Sidebar extends Component {
           )}
         <div className="logo">
           <a
-            href="https://www.creative-tim.com?ref=lbd-sidebar"
+            href=""
             className="simple-text logo-mini"
           >
             <div className="logo-img">
               <img src={logo} alt="logo_image" />
             </div>
           </a>
-          <a
-            href="https://www.creative-tim.com?ref=lbd-sidebar"
-            className="simple-text logo-normal"
+          <div className="simple-text logo-normal"
           >
             LeMedic
-          </a>
+          </div>
         </div>
         <div className="sidebar-wrapper">
           <ul className="nav">

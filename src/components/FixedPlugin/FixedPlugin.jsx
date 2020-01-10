@@ -2,10 +2,11 @@
 import React, { Component } from "react";
 import Toggle from "react-toggle";
 
-import imagine1 from "assets/img/sidebar-1.jpg";
-import imagine2 from "assets/img/sidebar-2.jpg";
-import imagine3 from "assets/img/sidebar-3.jpg";
-import imagine4 from "assets/img/sidebar-4.jpg";
+import imagine1 from "assets/img/doc.png";
+import imagine2 from "assets/img/logo.png";
+import imagine3 from "assets/img/steth.jpg";
+// import imagine4 from "assets/img/sidebar-4.jpg";
+import imagine4 from "assets/img/stethescope.jpg"
 
 class FixedPlugin extends Component {
   constructor(props) {
@@ -162,37 +163,6 @@ class FixedPlugin extends Component {
               </a>
             </li>
 
-            <li className="button-container">
-              <div className="">
-                <a
-                  href="https://www.creative-tim.com/product/light-bootstrap-dashboard-react?ref=lbdr-fixed-plugin"
-                  target="_blank"
-                  className="btn btn-success btn-block btn-fill"
-                >
-                  Download free!
-                </a>
-              </div>
-            </li>
-            <li className="button-container">
-              <div className="">
-                <a
-                  href="https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react?ref=lbdr-fixed-plugin"
-                  target="_blank"
-                  className="btn btn-warning btn-block btn-fill"
-                >
-                  Buy Pro
-                </a>
-              </div>
-            </li>
-            <li className="button-container">
-              <a
-                href="https://demos.creative-tim.com/light-bootstrap-dashboard-react/#/documentation/getting-started?ref=lbdr-fixed-plugin"
-                target="_blank"
-                className="btn btn-fill btn-info"
-              >
-                Documentation
-              </a>
-            </li>
           </ul>
         </div>
       </div>
