@@ -3,15 +3,7 @@ import { Form,FormGroup,FormControl,ControlLabel,Button} from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 
 export default function Login(props) {
-     // function isAuthed(){
-    //     // const token = localStorage.getItem('token');
-    //     // console.log("token->",token);
-    //     // if(token){
-    //     //    return true; 
-    //     // }
-    //     return false;
-    // }
-  return (
+   return (
     <div>
         <Form inline>
         <FormGroup controlId="username">

@@ -6,13 +6,13 @@ export default function Login(props) {
   return (
     <div>
         <Form inline>
-        <FormGroup controlId="username">
+        <FormGroup controlId="ftpassword">
             <ControlLabel>New password</ControlLabel>{' '}
-            <FormControl type="text" placeholder="username" />
+            <FormControl type="text" placeholder="ftpassword" onChange={props.onClickHandler}/>
         </FormGroup>{' '}
-        <FormGroup controlId="password">
-            <ControlLabel>Email</ControlLabel>{' '}
-            <FormControl type="password" placeholder="password" />
+        <FormGroup controlId="repassword">
+            <ControlLabel>Retye password</ControlLabel>{' '}
+            <FormControl type="password" placeholder="repassword" onChange={props.onClickHandler}/>
         </FormGroup>{' '}
         <Button  onClick={props.onSubmitHandler}>Login</Button>
         </Form>

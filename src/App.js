@@ -9,18 +9,42 @@ export default function App() {
 
     const [userName, setuserName] = useState("");
     const [password, setpassword] = useState("");
+    const [ftpassword, setftpassword] = useState("");
+    const [repassword, setrepassword] = useState("");
     const [isAuthed, setisAuthed] = useState(false);
     const [resetPassword, setresetPassword] = useState(false);
     const [authUser, setUser] = useState({});
+    const [isResetChecked, setisResetChecked] = useState(false);
 
     function onClickHandler(event){
         let id = event.target.id;
         let value = event.target.value;
-        if(id == 'username')
-        setuserName(value);
-        else {
+        switch(id){
+            case "username" :
+            setuserName(value);
+             break;
+            case "password":
             setpassword(value);
+            break;
+            case "ftpassword":
+            setftpassword(value);
+            break;
+            case "repassword":
+            setrepassword(value);
         }
+    }
+
+    async function onSubmitResetpassword(){
+        const headers = {
+            headers: { user: "user1" }
+          }
+             const body = {
+              "username": userName,
+              "password": ftpassword
+          }
+          const result = await axios.post('http://localhost:9090/login/reset',body, headers); 
+          setresetPassword(false);
+          setisResetChecked(true);
     }
 
     async function onSubmitHandler(){
@@ -36,11 +60,11 @@ export default function App() {
             const loginResponse = result.data.data[0];
             console.log("loginResponse",loginResponse);
             setUser(loginResponse);
-            if(loginResponse["sessionCount"]>0){
+            if(loginResponse["sessionCount"]>0 || isResetChecked ){
                 setisAuthed(true);  
             } else {
                 console.log("first time login");
-                setresetPassword(true);
+                setresetPassword(true);                
             }
           } catch(e){
             console.log("Invalid credentials");
@@ -48,7 +72,7 @@ export default function App() {
         }
 
     function logoutHandler(){
-        console.log("logout")
+        console.log("logout");
         setisAuthed(false);
     }
 
@@ -59,7 +83,7 @@ export default function App() {
           {
           resetPassword ? 
           <div>
-              <ResetPassword />
+              <ResetPassword onClickHandler={onClickHandler} onSubmitHandler={onSubmitResetpassword}/>
           </div>
           : (
             <div>
