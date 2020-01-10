@@ -381,7 +381,13 @@ export default function IntegrationAutosuggest(props) {
           <div>
             <h1>Awaiting Confirmation.....</h1>
           </div>
-        )
+          )
+      case 7:
+      return(
+        <div>
+          <h1>Awaiting Confirmation.....</h1>
+        </div>
+        )    
 
   }
 }

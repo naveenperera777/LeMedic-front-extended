@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {Button,Alert,Form,FormControl,FormGroup, ControlLabel, ButtonToolbar, DropdownButton, MenuItem} from 'react-bootstrap';
 import axios from "axios";
+import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 
 const uuidv4 = require('uuid/v4');
 
@@ -15,9 +16,7 @@ export default function RegisterPatient(props) {
   const [city, setCity] = useState("");
   const [district, setDistrict] = useState("");
   const [errors , setErrors] = useState({});
-  // useEffect(() => {      
-  //     getFormSuccessState();
-  //  },[]);
+  const [confirmation, setConfirmation] = useState(false);
  
   console.log("errors",errors);
   console.log("fname", fname, "lname", lname, "gender", gender, "nic", nic, "email", email, "mobile", mobile, "city", city, "district", district);
@@ -41,6 +40,7 @@ export default function RegisterPatient(props) {
       url: "http://localhost:9090/patient/add",
       data: form_data
     });
+    setConfirmation(true);
   };
 
 
@@ -158,7 +158,8 @@ export default function RegisterPatient(props) {
     return "success";
   }
 
-
+  if(!confirmation){
+    console.log("confirmation", confirmation);
   return (
     <div className="content">
       <h3>Register Patient</h3><br></br>
@@ -248,4 +249,8 @@ export default function RegisterPatient(props) {
             </Form>
     </div>
   );
+  } else {
+    console.log("confirmation",confirmation);
+    return <Redirect to='/admin/patient/dashboard'/>
+  }
 }

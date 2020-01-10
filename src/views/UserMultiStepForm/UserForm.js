@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormUserDetails from "./FormUserDetails";
 import UserProfessional from "./UserProfessional";
 import axios from "axios";
-
+import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 
 export default function UserForm() {
   const [fname, setFirstName] = useState("");
@@ -150,9 +150,6 @@ export default function UserForm() {
       </div>
     );
   } else {
-    // return <Redirect to={"/user/profile"} />;
-    return (<div>     
-             <h1>User Added Successfully!</h1>           
-    </div>)
+    return <Redirect to='/admin/users'/>;  
   }
 }

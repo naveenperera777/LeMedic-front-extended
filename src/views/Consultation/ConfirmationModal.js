@@ -1,12 +1,13 @@
 import React, { useState  } from "react";
 import {Modal,Button} from "react-bootstrap";
-
+// import { BrowserRouter as Router, Switch, Route,Redirect } from "react-router-dom";
 
 export default function ConfirmationModal(props) {
 
     const [show, setShow] = useState(true);
     function handleHide(){
         setShow(false);
+        // return <Redirect to='/admin/consultant/dashboard'/>       
     }
     return(
     <div className="modal-container" style={{ height: 200 }}>

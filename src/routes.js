@@ -43,7 +43,7 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/testing",
+    path: "/users",
     name: "User List",
     icon: "pe-7s-user",
     component: UserList,
