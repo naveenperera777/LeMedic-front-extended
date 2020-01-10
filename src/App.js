@@ -11,7 +11,7 @@ export default function App() {
     const [password, setpassword] = useState("");
     const [ftpassword, setftpassword] = useState("");
     const [repassword, setrepassword] = useState("");
-    const [isAuthed, setisAuthed] = useState(true);
+    const [isAuthed, setisAuthed] = useState(false);
     const [resetPassword, setresetPassword] = useState(false);
     const [authUser, setUser] = useState({});
     const [isResetChecked, setisResetChecked] = useState(false);

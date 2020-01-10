@@ -8,6 +8,7 @@ import PatientRegistration from "views/PatientRegistration/registerPatient";
 import AdminDashboard from "views/AdminDashboard";
 import PatientStatistics from "views/PatientStatistics";
 import ConsultantStats from "views/ConsultantStatistics";
+import PatientList from "views/patientList.js";
 
 const dashboardRoutes = [
   {
@@ -43,6 +44,13 @@ const dashboardRoutes = [
     name: "User List",
     icon: "pe-7s-user",
     component: UserList,
+    layout: "/admin"
+  },
+  {
+    path: "/patients",
+    name: "Patient List",
+    icon: "pe-7s-user",
+    component: PatientList,
     layout: "/admin"
   },
 
