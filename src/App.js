@@ -34,6 +34,8 @@ export default function App() {
         }
     }
 
+    console.log("pw",password,"rpw",ftpassword)
+
     async function onSubmitResetpassword(){
         const headers = {
             headers: { user: "user1" }
