@@ -11,7 +11,7 @@ export default function App() {
     const [password, setpassword] = useState("");
     const [ftpassword, setftpassword] = useState("");
     const [repassword, setrepassword] = useState("");
-    const [isAuthed, setisAuthed] = useState(false);
+    const [isAuthed, setisAuthed] = useState(true);
     const [resetPassword, setresetPassword] = useState(false);
     const [authUser, setUser] = useState({});
     const [isResetChecked, setisResetChecked] = useState(false);
@@ -63,6 +63,7 @@ export default function App() {
             console.log("loginResponse",loginResponse);
             setUser(loginResponse);
             if(loginResponse["sessionCount"]>0 || isResetChecked ){
+              localStorage.setItem('user', loginResponse["user_id"]);
                 setisAuthed(true);  
             } else {
                 console.log("first time login");

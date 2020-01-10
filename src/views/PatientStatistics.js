@@ -2,6 +2,7 @@ import React, { useState , useEffect } from "react";
 import { Grid, Row, Col,ListGroup,Table,ListGroupItem,MenuItem,Checkbox,DropdownButton,ButtonToolbar,ToggleButtonGroup,ToggleButton } from "react-bootstrap";
 import axios from 'axios';
 import BarChart from '../components/Reports/BarChart';
+import Doughnut from "components/Reports/DoughnutChart";
 // CSS 57.9%	 JavaScript 41.5%	 HTML 0.6%
 
 export default function PatientStatistics() {
@@ -454,7 +455,9 @@ export default function PatientStatistics() {
 
           <Col xs={12} md={8}>
 
-            <BarChart label={label} graphData={graphData} title="Patient Count"/>             
+            {/* <BarChart label={label} graphData={graphData} title="Patient Count"/>   */}
+            <BarChart graphData={graphData} label={label} title="Patient Count" color="rgb(68, 90, 216)"/>   
+            <Doughnut  graphData={graphData} label={label} title="Patient Count"/>
               
             </Col>
           </Row>

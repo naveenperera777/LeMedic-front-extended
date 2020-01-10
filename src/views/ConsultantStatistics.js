@@ -10,19 +10,23 @@ export default function ConsultantStats() {
     const [to, setTo] = useState("");
     const [receipts, setReceipts] = useState([]);
     const [count,setCount] = useState({});
+    const [user, setUser] = useState("");
 
 
     useEffect(() => {
+        const user =localStorage.getItem('user');
+        console.log("user--------------->",user);
+        setUser(user);
         const fetchData = async () => {
           const result = await axios(
-            `http://localhost:9090/statistics/institute/consultant/receipt/4`
+            `http://localhost:9090/statistics/institute/consultant/receipt/${user}`
           );
           setReceipts(result.data.data);
         };
        
         const fetchSummaryData = async () => {
         const headers = { headers: { 'from' :'0', 'to':'0'} };
-        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/4`;
+        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/${user}`;
         let result;
         try{
           result = await axios.get(url,headers);
@@ -34,7 +38,7 @@ export default function ConsultantStats() {
 
         const fetchPatientSessionCount = async () => {
             const headers = { headers: { 'from' :'0', 'to':'0'} };
-            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/4`;
+            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/${user}`;
             let result;
             try{
               result = await axios.get(url,headers);
@@ -50,7 +54,7 @@ export default function ConsultantStats() {
 
      async function onClickHandler(){
         const headers = { headers: { 'from' :from, 'to':to} };
-        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/4`;
+        const url = `http://localhost:9090/statistics/institute/consultant/receipt/summary/${user}`;
         let result;
         try{
           result = await axios.get(url,headers);
@@ -60,7 +64,7 @@ export default function ConsultantStats() {
         }
         const fetchPatientSessionCount = async () => {
             const headers = { headers: { 'from' :from, 'to':to} };
-            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/4`;
+            const url = `http://localhost:9090/statistics/institute/consultant/count/session/patient/${user}`;
             let result;
             try{
               result = await axios.get(url,headers);

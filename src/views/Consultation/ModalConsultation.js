@@ -5,7 +5,7 @@ import {Modal,Button,Panel,ListGroup,ListGroupItem} from "react-bootstrap";
 
 export default function ModalConsultation(props){
   console.log("modal data", props); 
-  let timestamp = new Date((props.timestamp)/1000);
+  let timestamp = new Date((props.data.timestamp));
   let utcString = timestamp.toUTCString();
   return (
     <div>
@@ -35,12 +35,7 @@ export default function ModalConsultation(props){
        <ListGroupItem><h6>General Examination</h6></ListGroupItem>        
           <ListGroupItem>{props.data.general_exam}</ListGroupItem>
         
-        {/*
-        <ListGroupItem><h6>Systemic Examination</h6></ListGroupItem>
-          <ListGroupItem>{props.data.signs}</ListGroupItem>
-         */}
-
-       
+          
        <ListGroupItem><h6>Investigation</h6></ListGroupItem>
           <ListGroupItem>{props.data.investigation}</ListGroupItem>
          </ListGroup> 
@@ -68,32 +63,7 @@ export default function ModalConsultation(props){
         </ListGroup>        
       </Panel>
 
-      <Panel bsStyle="warning">
-      <Panel.Heading>Treatment</Panel.Heading>
-        <ListGroup>
-          <ListGroupItem><h6>Consultation Fees</h6></ListGroupItem>
-          <ListGroupItem>{props.data.medical_management}</ListGroupItem>
-        
-          <ListGroupItem><h6>Fees for Medications</h6></ListGroupItem>
-        
-          <ListGroupItem>{props.data.surgical_management}</ListGroupItem>
-          
-          <ListGroupItem><h6>Tax Percentage</h6></ListGroupItem>
-        
-          <ListGroupItem>{props.data.remarks}</ListGroupItem>
-        
-          <ListGroupItem><h6>Miscellaneous Charges</h6></ListGroupItem>
-        
-          <ListGroupItem>{props.data.next_date}</ListGroupItem>
-
-          <ListGroupItem><h6>Total Amount</h6></ListGroupItem>
-        
-        <ListGroupItem>{props.data.next_date}</ListGroupItem>
-        </ListGroup>   
-      </Panel>
-
-
-      
+         
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>

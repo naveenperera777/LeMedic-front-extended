@@ -2,7 +2,7 @@ import React from "react";
 import {Doughnut} from 'react-chartjs-2';
 
 
-export default function Doughnut(props) {
+export default function DoughnutChart(props) {
   
      const doughnutData = {
         labels  : props.label,
@@ -14,7 +14,13 @@ export default function Doughnut(props) {
                     '#36A2EB',
                     '#FFCE56',
                     'FF6384',
-                    '#36A2EB'
+                    '#36A2EB',
+                    '#AF5055',
+                    '#50AF97',
+                    '#ACAF50',
+                    '#AF5050',
+                    '#5850AF'
+
 
                 ],
                 hoverBackgroundColor: [

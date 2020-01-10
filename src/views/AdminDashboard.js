@@ -157,7 +157,7 @@ export default function PatientDashboard() {
                 statsText="Sessions"
                 statsValue={count["sessionCount"]}
                 statsIcon={<i className="fa fa-calendar-o" />}
-                statsIconText="Last day"
+                statsIconText="Updated now"
               />
             </Col>
             <Col lg={3} sm={6}>
@@ -166,7 +166,7 @@ export default function PatientDashboard() {
                 statsText="Patients"
                 statsValue={count["patientCount"]}
                 statsIcon={<i className="fa fa-clock-o" />}
-                statsIconText="In the last hour"
+                statsIconText="Updated now"
               />
             </Col>
             <Col lg={3} sm={6}>

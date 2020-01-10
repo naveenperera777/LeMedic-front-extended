@@ -6,11 +6,9 @@ import parse from "autosuggest-highlight/parse";
 import TextField from "@material-ui/core/TextField";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
-import Popper from "@material-ui/core/Popper";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import PatientProfile from "./PatientProfile.js";
-import { func } from "prop-types";
 import Modal from "./ModalHome";
 import DiagnosisConsultation from "./DiagnosisConsultation.js";
 import MedicationsConsultation from "./MedicationsConsultation.js";
@@ -22,7 +20,6 @@ const uuidv4 = require('uuid/v4');
 
 
 let suggestions = [];
-// let selected_user = [];
 let selected_user = {};
 
 function renderInputComponent(inputProps) {
@@ -50,9 +47,6 @@ function renderSuggestion(suggestion, { query, isHighlighted }) {
   suggestion.first_name + " " + suggestion.last_name + " " + suggestion.nic;
   const matches = match(full_name, query);
   const parts = parse(full_name, matches);
-
-  // const matches = match(suggestion.first_name, query);
-  // const parts = parse(suggestion.first_name, matches);
 
   return (
     <MenuItem selected={isHighlighted} component="div">
@@ -128,8 +122,11 @@ export default function IntegrationAutosuggest(props) {
   let stepperState = props.currentStepperState;
 
   console.log("searchstate", props.currentStepperState);
+  const [user , setUser] = useState("");
 
   useEffect(() => {
+    const user = localStorage.getItem('user');
+    setUser(user);
     console.log("stepper state", props.currentStepperState);
     console.log("diagnosis_State", Diagnosis);
     console.log("medication_State", Medication);
@@ -211,17 +208,27 @@ export default function IntegrationAutosuggest(props) {
       ...Pricing,
       [name]: event.target.value
     });
+   
   };
 
-   async function saveMedicalRecord(){   
+  function setTotal(total){
+    setPricing({
+      ...Pricing,
+      ["total"]: total
+    });
+   
+  }
+
+   async function saveMedicalRecord(){  
+    var todayDate = new Date().toISOString().slice(0,10); 
         const headers = {
           headers: { user: "user1" }
         }
         let session_id = uuidv4();
         const body = {
           "patient_id": selected_user.patient_id,
-          "consultant_id" : "456",
-          "timestamp" : "2019-01-01",
+          "consultant_id" : user,
+          "timestamp" : todayDate,
           "session_id" : session_id,
           "complain": Diagnosis.complain,
           "signs" : Diagnosis.signs,
@@ -248,11 +255,23 @@ export default function IntegrationAutosuggest(props) {
           "receiver": selected_user.email,
           "title": `Medical report of ${selected_user.first_name} ${selected_user.last_name}`,
           "diagnosis" :Diagnosis,
-          "medication": Medication,
-          "pricing": Pricing
+          "medication": {
+            "medical_management":Medication.medicalmgt,
+            "surgical_management": Medication.surgicalmgt,
+            "next_date": Medication.nextdate,
+            "remarks": Medication.remarks
+          },
+          "pricing": {
+            "consultationFees" : Pricing.consultationFee,
+            "medicationFees": Pricing.medicationFee,
+            "medicationFees": Pricing.miscellaneous,
+            "tax": Pricing.tax,
+            "total": Pricing.total
+          }
         }
         await axios.post('http://localhost:9090/session/pricing', pricingBody,  headers);
         //send email
+        console.log("email body",emailBody);
         await axios.post('http://localhost:9090/admin/email',emailBody,headers);
       setConfirmation(true);    
       console.log("result", result.data.data);
@@ -339,7 +358,9 @@ export default function IntegrationAutosuggest(props) {
           <h1>Pricing</h1>
           <PricingConsultation 
           handlePricingChange={pricingChangeHandler}
-          pricingData = {Pricing}/>
+          pricingData = {Pricing}
+          setTotal={setTotal}
+          />
         </div>
       );
     case 5:

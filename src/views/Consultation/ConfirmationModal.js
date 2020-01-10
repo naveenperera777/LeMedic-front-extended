@@ -7,7 +7,6 @@ export default function ConfirmationModal(props) {
     const [show, setShow] = useState(true);
     function handleHide(){
         setShow(false);
-        //redirect
     }
     return(
     <div className="modal-container" style={{ height: 200 }}>
