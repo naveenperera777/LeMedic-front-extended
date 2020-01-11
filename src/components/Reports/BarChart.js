@@ -35,10 +35,9 @@ export default function PatientStatistics(props) {
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero:true,
-                            min: 0,
-                            max: 10    
-                        }
+                            beginAtZero:true,                              
+                        },
+                        stretch: true
                       }]
                    }
             }} />  

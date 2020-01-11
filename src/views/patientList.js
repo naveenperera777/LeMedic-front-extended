@@ -81,21 +81,7 @@ export default function CustomizedTables(props) {
 
     return (
       <div>
-        <Paper className={classes.root}>
-          {/* <Link to={"/admin/create"}>
-            <Fab
-              variant="extended"
-              color="primary"
-              aria-label="delete"
-              className={classes.fab}
-            >
-              <NavigationIcon className={classes.extendedIcon} />
-              <Typography variant="h5">
-              Add User
-            </Typography>
-            </Fab>
-          </Link> */}
-
+        <Paper className={classes.root}>        
           <div class="table-responsive table-full-width" >
             <table class="table table-hover table-striped" marginLeft="">
               <thead>

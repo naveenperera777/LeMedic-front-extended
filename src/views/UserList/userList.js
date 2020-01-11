@@ -132,45 +132,8 @@ export default function CustomizedTables(props) {
                  ))}
             </tbody>
         </table>
-        </div>
-          
-          {/* <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell align="right">NIC</StyledTableCell>
-                <StyledTableCell align="right">Email</StyledTableCell>
-                <StyledTableCell align="right">Sex</StyledTableCell>
-                <StyledTableCell align="right">Role</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map(row => (
-                <Link
-                  to={{
-                    pathname: "/admin/user/profile",
-                    state: {
-                      user: row
-                    }
-                  }}
-                >
-                  <StyledTableRow
-                    key={row.first_name}
-                    onClick={() => setrowUser(row)}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {row.first_name} {row.last_name}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.nic}</StyledTableCell>
-                    <StyledTableCell align="right">{row.email}</StyledTableCell>
-                    <StyledTableCell align="right">{row.sex}</StyledTableCell>
-                    <StyledTableCell align="right">{row.role}</StyledTableCell>
-                  </StyledTableRow>
-                 </Link>
-              ))}
-            </TableBody>
-          </Table> */}
-          </Paper>
+        </div>          
+                 </Paper>
 
       </div>
     );

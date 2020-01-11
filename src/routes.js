@@ -1,6 +1,3 @@
-import Icons from "views/Icons.jsx";
-import Maps from "views/Maps.jsx";
-import Notifications from "views/Notifications.jsx";
 import ConsultationHome from "views/Consultation/HomeConsultation.js";
 import UserList from "views/UserList/userList";
 import UserForm from "views/UserMultiStepForm/UserForm";
@@ -9,6 +6,8 @@ import AdminDashboard from "views/AdminDashboard";
 import PatientStatistics from "views/PatientStatistics";
 import ConsultantStats from "views/ConsultantStatistics";
 import PatientList from "views/patientList.js";
+import MyProfile from "views/myProfile.js";
+import UserProfile from "views/UserProfile.js"
 
 const dashboardRoutes = [
   {
@@ -63,31 +62,18 @@ const dashboardRoutes = [
   },
 
   {
+    path: "/profile",
+    name: "My profile",
+    icon: "pe-7s-user",
+    component: UserProfile,
+    layout: "/admin"
+  },
+
+  {
     path: "/create",
     name: "create",
     icon: "pe-7s-user",
     component: UserForm,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "pe-7s-science",
-    component: Icons,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "pe-7s-map-marker",
-    component: Maps,
-    layout: "/admin"
-  },
-  {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "pe-7s-bell",
-    component: Notifications,
     layout: "/admin"
   }
 ];

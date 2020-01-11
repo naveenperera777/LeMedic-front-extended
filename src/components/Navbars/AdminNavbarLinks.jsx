@@ -1,10 +1,15 @@
-import React, { Component } from "react";
+import React, { useEffect,useState } from "react";
 import { NavItem, Nav, NavDropdown, MenuItem } from "react-bootstrap";
 import { Button } from "@material-ui/core";
 
 
 export default function AdminNavbarLinks(props){
-  console.log("read",props.read);
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    const user =localStorage.getItem('name');
+    setUser(user)
+      }, []);
   return (
     <div>
         <Nav>
@@ -15,7 +20,7 @@ export default function AdminNavbarLinks(props){
         </Nav>
         <Nav pullRight>
           <NavItem eventKey={1} href="#">
-            Account
+            {user}
           </NavItem>         
           <NavItem eventKey={4} onClick={props.logoutHandler}>Log out</NavItem>
         </Nav>

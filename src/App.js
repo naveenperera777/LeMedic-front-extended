@@ -64,6 +64,12 @@ export default function App() {
             setUser(loginResponse);
             if(loginResponse["sessionCount"]>0 || isResetChecked ){
               localStorage.setItem('user', loginResponse["user_id"]);
+              localStorage.setItem('first_name',loginResponse["first_name"]);
+              localStorage.setItem('last_name',loginResponse["last_name"]);
+              localStorage.setItem('nic',loginResponse['nic']);
+              localStorage.setItem('email',loginResponse['email']);
+              localStorage.setItem('gender',loginResponse['gender']);
+              localStorage.setItem('role',loginResponse['role']);
                 setisAuthed(true);  
             } else {
                 console.log("first time login");

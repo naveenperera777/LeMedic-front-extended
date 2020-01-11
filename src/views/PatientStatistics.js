@@ -456,12 +456,12 @@ export default function PatientStatistics() {
           <Col xs={12} md={8}>
 
             {/* <BarChart label={label} graphData={graphData} title="Patient Count"/>   */}
-            <BarChart graphData={graphData} label={label} title="Patient Count" color="rgb(68, 90, 216)"/>   
+            <BarChart graphData={graphData} label={label} title="Patient Count" color="rgb(213, 57, 57)"/>   
             <Doughnut  graphData={graphData} label={label} title="Patient Count"/>
               
             </Col>
           </Row>
-
+{/* 
           <Row>
           <Col xs={12} md={8}>
           <Table striped bordered condensed hover>
@@ -494,7 +494,7 @@ export default function PatientStatistics() {
 
           
 
-          </Row>
+          </Row> */}
 
 
 
